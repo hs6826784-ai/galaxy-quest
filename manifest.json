@@ -1,0 +1,21 @@
+{
+  "short_name": "GalaxyQuest",
+  "name": "Mahnoor's Galaxy Quest",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#110e1a",
+  "theme_color": "#ff99cc",
+  "display": "standalone",
+  "orientation": "portrait"
+}
