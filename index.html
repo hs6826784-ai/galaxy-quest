@@ -1,1078 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mahnoor's Cute Quest: Galaxy Odyssey</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            touch-action: none;
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #110e1a;
-            color: #fff;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-        #game-container {
-            position: relative;
-            width: 450px;
-            height: 750px;
-            background: linear-gradient(to bottom, #0f0a1c, #1f1430);
-            border: 4px solid #ff99cc;
-            border-radius: 24px;
-            box-shadow: 0 0 35px rgba(255, 153, 204, 0.35);
-            overflow: hidden;
-        }
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .screen-ui {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(16, 10, 26, 0.97);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 10;
-            padding: 25px 15px;
-        }
-        .hidden {
-            display: none !important;
-        }
-        
-        h1 {
-            color: #ff66cc;
-            font-size: 28px;
-            margin: 0 0 4px 0;
-            text-align: center;
-            text-shadow: 0 0 12px rgba(255, 102, 204, 0.7);
-        }
-        .subtitle {
-            color: #99ffcc;
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-align: center;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Every Memory With You</title>
+  <meta name="description" content="A love story, told in memories." />
 
-        /* Home Menu Controls */
-        .menu-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 80%;
-            margin-top: auto;
-            margin-bottom: auto;
-        }
-        .menu-btn {
-            background: linear-gradient(to right, #ff3399, #ff66cc);
-            color: white;
-            padding: 15px;
-            border: 2px solid #fff;
-            border-radius: 50px;
-            font-family: inherit;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 51, 153, 0.4);
-            transition: transform 0.1s;
-            text-align: center;
-        }
-        .menu-btn:active {
-            transform: scale(0.95);
-        }
-        .menu-btn.alt {
-            background: linear-gradient(to right, #33ccff, #3388ff);
-            box-shadow: 0 4px 15px rgba(51, 153, 255, 0.4);
-        }
+  <!-- Google Fonts: Playfair Display (romantic serif) + Cormorant + Poppins (soft sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-        /* Settings CSS */
-        .settings-row {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(40, 25, 60, 0.6);
-            padding: 15px;
-            border-radius: 14px;
-            border: 1px solid #ff66cc;
-            margin-bottom: 15px;
-        }
-
-        /* Top Bar Info */
-        .map-stats-bar {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            background: rgba(35, 20, 55, 0.8);
-            padding: 10px 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border: 1px solid #ff66cc;
-            font-size: 15px;
-            font-weight: bold;
-        }
-
-        /* 100 Levels Scrollable Grid */
-        #map-menu {
-            width: 100%;
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            border-radius: 16px;
-            background: rgba(25, 15, 40, 0.6);
-            border: 2px dashed #ff99cc;
-            margin-bottom: 12px;
-        }
-
-        .level-node {
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #3d1c4a, #1b0d2d);
-            border: 2px solid #ff66cc;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 15px;
-            font-weight: bold;
-            color: #fff;
-            cursor: pointer;
-        }
-        .level-node.boss-node {
-            border-color: #ff3333;
-            background: linear-gradient(135deg, #661122, #2b050c);
-        }
-        .level-node.locked {
-            background: #140c1f;
-            border-color: #3b2f4c;
-            color: #554466;
-            cursor: not-allowed;
-        }
-        .level-node.cleared {
-            background: linear-gradient(135deg, #133a2f, #0a1d18);
-            border-color: #2ecc71;
-        }
-        .node-status { font-size: 10px; margin-top: 2px; }
-
-        /* Shop Elements */
-        .shop-grid {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 10px;
-            flex: 1;
-            overflow-y: auto;
-        }
-        .shop-item-card {
-            background: rgba(40, 25, 60, 0.85);
-            border: 2px solid #ff66cc;
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .shop-item-details { display: flex; flex-direction: column; gap: 2px; }
-        .shop-item-title { font-weight: bold; font-size: 14px; color: #99ffcc; }
-        .shop-item-desc { font-size: 10px; color: #d1c4e9; }
-        .shop-buy-btn {
-            background: #ffcc33; border: none; color: #221230; padding: 8px 12px;
-            font-family: inherit; font-weight: bold; font-size: 11px; border-radius: 8px;
-            cursor: pointer; display: flex; flex-direction: column; align-items: center;
-        }
-        .shop-buy-btn:disabled { background: #4a3b5c; color: #7f6b96; }
-
-        /* HUD Layer */
-        #ui-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; display: flex;
-            flex-direction: column; justify-content: space-between; padding: 15px;
-        }
-        .hud-top {
-            display: flex; justify-content: space-between;
-            font-size: 16px; font-weight: bold; color: #fff;
-            text-shadow: 0 0 6px rgba(255, 105, 180, 0.8);
-        }
-        #hud-lives-container {
-            color: #ff3366; font-size: 18px; letter-spacing: 2px;
-        }
-        #powerup-timers-hud { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
-        .timer-bar-container {
-            width: 130px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 5px; overflow: hidden; display: flex; align-items: center; height: 12px;
-            font-size: 8px; font-weight: bold; position: relative;
-        }
-        .timer-fill { height: 100%; width: 100%; }
-        .timer-label { position: absolute; width: 100%; text-align: center; color: #fff; }
-
-        .in-level-upgrades {
-            pointer-events: auto; background: rgba(30, 18, 48, 0.95);
-            border: 2px solid #ff99cc; border-radius: 14px; padding: 6px;
-            display: flex; justify-content: space-around; gap: 6px;
-        }
-        .upgrade-btn {
-            flex: 1; background: #1f1133; border: 1.5px solid #ff66cc; color: #fff;
-            padding: 6px 2px; border-radius: 10px; font-size: 9px; font-family: inherit;
-            font-weight: bold; display: flex; flex-direction: column; align-items: center;
-        }
-        .upgrade-btn:disabled { color: #5a4870; border-color: #3b2d4c; background: #120921; }
-        .cost { color: #ffcc33; }
-
-        .overlay-center-box { margin: auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-        .action-btn {
-            background: #ff66cc; border: none; color: white; padding: 12px 30px;
-            font-size: 15px; font-weight: bold; font-family: inherit; border-radius: 25px;
-            cursor: pointer; box-shadow: 0 4px 12px rgba(255, 102, 204, 0.4);
-            text-align: center;
-        }
-        #damage-flash {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(255,0,0,0.4); pointer-events: none; opacity: 0; z-index: 5;
-        }
-        .love-letter {
-            background: #fff; color: #23123a; border-radius: 18px; padding: 20px;
-            margin-top: 15px; width: 95%; box-shadow: 0 8px 20px rgba(255,102,180,0.5);
-            border: 3px solid #ff66cc; text-align: center; font-size: 14px; line-height: 1.5;
-        }
-        
-        /* Two buttons row wrapper layout */
-        .btn-row {
-            display: flex;
-            width: 100%;
-            gap: 10px;
-            margin-top: 15px;
-        }
-    </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div id="game-container">
-    <canvas id="gameCanvas"></canvas>
-    <div id="damage-flash"></div>
+  <!-- ============================================= -->
+  <!-- LOADING SCREEN                                  -->
+  <!-- ============================================= -->
+  <div id="loading-screen" aria-hidden="true">
+    <div class="loader-heart">
+      <svg viewBox="0 0 32 29" class="loader-heart-svg">
+        <path d="M16 28.5C16 28.5 1.5 19.7 1.5 9.6C1.5 4.9 5.3 1 10.1 1C12.9 1 15.3 2.4 16 4.5C16.7 2.4 19.1 1 21.9 1C26.7 1 30.5 4.9 30.5 9.6C30.5 19.7 16 28.5 16 28.5Z"/>
+      </svg>
+    </div>
+    <p class="loader-text">gathering our memories&hellip;</p>
+  </div>
 
-    <div id="screen-home" class="screen-ui">
-        <h1 style="font-size: 32px; margin-top: 40px;">MAHNOOR'S<br>GALAXY QUEST</h1>
-        <div class="subtitle" style="color: #ff99cc;">🌌 CHOOSE YOUR PATH PRINCESS 🌌</div>
-        
-        <div class="menu-layout">
-            <button class="menu-btn" id="home-start-btn">🚀 START ADVENTURE</button>
-            <button class="menu-btn alt" id="home-shop-btn">🛍️ UPGRADE SHIP SHOP</button>
-            <button class="menu-btn alt" id="home-settings-btn" style="background: linear-gradient(to right, #9955ff, #cc66ff);">⚙️ SETTINGS</button>
-        </div>
-        <div style="font-size: 11px; color: #ff66cc; text-shadow: 0 0 5px #ff66cc;">Created with ❤️ by Hamza</div>
+  <!-- ============================================= -->
+  <!-- AMBIENT LAYERS: particles + floating hearts     -->
+  <!-- ============================================= -->
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+  <div id="floating-hearts" aria-hidden="true"></div>
+
+  <!-- ============================================= -->
+  <!-- NAVIGATION                                      -->
+  <!-- ============================================= -->
+  <header class="nav" id="nav">
+    <a href="#hero" class="nav-logo">H&nbsp;&amp;&nbsp;M</a>
+
+    <nav class="nav-links" id="nav-links">
+      <a href="#meeting" class="nav-link">Our Meeting</a>
+      <a href="#gallery" class="nav-link">Gallery</a>
+      <a href="#story" class="nav-link">Our Story</a>
+      <a href="#countdown" class="nav-link">Together</a>
+      <a href="#notes" class="nav-link">Love Notes</a>
+      <a href="#reasons" class="nav-link">Reasons</a>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- Music toggle -->
+      <button id="music-toggle" class="icon-btn" aria-label="Play background music" aria-pressed="false">
+        <svg class="icon-music-note" viewBox="0 0 24 24" fill="none"><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span class="eq-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+
+      <!-- Dark / light mode -->
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle light and dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </button>
+
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hidden audio element for background music -->
+  <!-- REPLACE with your own song file if you'd like -->
+  <audio id="bg-music" loop preload="none">
+    <source src="song/Raabta.mp3" type="audio/mpeg" />
+  </audio>
+
+  <main>
+
+    <!-- ============================================= -->
+    <!-- 1. HERO SECTION                                 -->
+    <!-- ============================================= -->
+    <section id="hero" class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow reveal-up">a love story, still being written</p>
+        <h1 class="hero-title">
+          <span class="typing-text" id="typing-text"></span><span class="typing-cursor">|</span>
+        </h1>
+        <p class="hero-sub reveal-up" style="--delay:0.5s">Every memory with you is my favorite story to tell, again and again.</p>
+        <a href="#meeting" class="btn btn-primary reveal-up" id="start-journey" style="--delay:0.7s">
+          <span>Start Our Journey</span>
+          <svg viewBox="0 0 24 24" fill="none" class="btn-arrow"><path d="M12 4v16M12 20l-6-6M12 20l6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="scroll-hint" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 2. OUR FIRST MEETING                            -->
+    <!-- ============================================= -->
+    <section id="meeting" class="section">
+      <div class="section-head reveal-up">
+        <p class="eyebrow">Chapter One</p>
+        <h2 class="section-title">Our First Meeting</h2>
+        <p class="section-desc">The moment the story quietly began, without either of us noticing.</p>
+      </div>
+
+      <div class="meet-grid">
+        <article class="meet-card glass reveal-up" style="--delay:0.05s">
+          <div class="meet-icon">🏙️</div>
+          <h3>The Place</h3>
+          <p>Ocean Mall, somewhere between 5 and 6 in the evening — an ordinary place that turned into somewhere I'd never forget, the moment you were standing there.</p>
+        </article>
+        <article class="meet-card glass reveal-up" style="--delay:0.15s">
+          <div class="meet-icon">✨</div>
+          <h3>The Moment</h3>
+          <p>A happiness neither of us could put into words — the kind you don't explain, you just feel it settle quietly inside you.</p>
+        </article>
+        <article class="meet-card glass reveal-up" style="--delay:0.25s">
+          <div class="meet-icon">💌</div>
+          <h3>The Feeling</h3>
+          <p>And with every step closer, the feeling only grew stronger — like my heart already knew what my mind was still catching up to.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 3. PHOTO GALLERY                                -->
+    <!-- ============================================= -->
+    <section id="gallery" class="section">
+      <div class="section-head reveal-up">
+        <p class="eyebrow">Frozen Moments</p>
+        <h2 class="section-title">Photo Gallery</h2>
+        <p class="section-desc">A collection of moments too beautiful to forget.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- Photo 1 -->
+        <figure class="gallery-item reveal-up" style="--delay:0.05s" data-caption="Holding hands, our fingers laced together">
+          <img src="images/photo1.png" alt="Our memory 1" loading="lazy" />
+          <figcaption><span>Holding hands, our fingers laced together</span></figcaption>
+        </figure>
+        <!-- Photo 2 -->
+        <figure class="gallery-item reveal-up" style="--delay:0.1s" data-caption="A moment I never want to forget">
+          <img src="images/photo2.png" alt="Our memory 2" loading="lazy" />
+          <figcaption><span>A moment I never want to forget</span></figcaption>
+        </figure>
+        <!-- Photo 3 -->
+        <figure class="gallery-item reveal-up" style="--delay:0.15s" data-caption="A moment I never want to forget">
+          <img src="images/photo3.png" alt="Our memory 3" loading="lazy" />
+          <figcaption><span>A moment I never want to forget</span></figcaption>
+        </figure>
+        <!-- Photo 4 -->
+        <figure class="gallery-item reveal-up" style="--delay:0.2s" data-caption="One of my favorite days with you">
+          <img src="images/photo4.png" alt="Our memory 4" loading="lazy" />
+          <figcaption><span>One of my favorite days with you</span></figcaption>
+        </figure>
+        <!-- Photo 5 -->
+        <figure class="gallery-item reveal-up" style="--delay:0.25s" data-caption="One of my favorite days with you">
+          <img src="images/photo5.png" alt="Our memory 5" loading="lazy" />
+          <figcaption><span>One of my favorite days with you</span></figcaption>
+        </figure>
+        <!-- Photo 6 -->
+        <figure class="gallery-item reveal-up" style="--delay:0.3s" data-caption="Just us, being us">
+          <img src="images/photo6.png" alt="Our memory 6" loading="lazy" />
+          <figcaption><span>Just us, being us</span></figcaption>
+        </figure>
+        <!-- Photo 7 -->
+        <figure class="gallery-item reveal-up" style="--delay:0.35s" data-caption="Just us, being us">
+          <img src="images/photo7.png" alt="Our memory 7" loading="lazy" />
+          <figcaption><span>Just us, being us</span></figcaption>
+        </figure>
+        <!-- Photo 8 -->
+        <figure class="gallery-item reveal-up" style="--delay:0.4s" data-caption="A memory I'll always keep close">
+          <img src="images/photo8.png" alt="Our memory 8" loading="lazy" />
+          <figcaption><span>A memory I'll always keep close</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close image">&times;</button>
+      <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous image">&#10094;</button>
+      <img src="" alt="" id="lightbox-img" />
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+      <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next image">&#10095;</button>
     </div>
 
-    <div id="screen-map" class="screen-ui hidden">
-        <h1>MAP ODYSSEY</h1>
-        <div class="subtitle">100 LEVELS PROGRESSION 👑</div>
-        
-        <div class="map-stats-bar">
-            <span class="global-coins-text">WALLET: ⭐ 0</span>
-            <span id="map-unlocked-count">PROGRESS: 1/100</span>
+    <!-- ============================================= -->
+    <!-- 4. MEMORY VIDEOS                                -->
+    <!-- ============================================= -->
+    <section id="videos" class="section">
+      <div class="section-head reveal-up">
+        <p class="eyebrow">Moments in Motion</p>
+        <h2 class="section-title">Memory Videos</h2>
+        <p class="section-desc">Some memories move too beautifully to stay still.</p>
+      </div>
+
+      <div class="video-grid">
+        <!-- Video 1 -->
+        <div class="video-card reveal-up" style="--delay:0.05s">
+          <video class="memory-video" autoplay muted loop playsinline preload="metadata">
+            <source src="videos/vid1.mp4" type="video/mp4" />
+          </video>
+          <button class="video-play-btn" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
+          </button>
+          <div class="video-caption">The little moment I keep replaying</div>
         </div>
 
-        <div id="map-menu"></div>
-        <div class="btn-row">
-            <button class="action-btn" id="map-back-btn" style="flex: 1; background: #4a3b5c;">BACK TO MENU 🏠</button>
-            <button class="action-btn" id="map-shop-btn" style="flex: 1; background: #ff3399;">OPEN SHOP 🛍️</button>
+        <!-- Video 2 -->
+        <div class="video-card reveal-up" style="--delay:0.1s">
+          <video class="memory-video" autoplay muted loop playsinline preload="metadata">
+            <source src="videos/vid2.mp4" type="video/mp4" />
+          </video>
+          <button class="video-play-btn" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
+          </button>
+          <div class="video-caption">Not shy at all when it's you 😄</div>
         </div>
+
+        <!-- Video 3 -->
+        <div class="video-card reveal-up" style="--delay:0.15s">
+          <video class="memory-video" autoplay muted loop playsinline preload="metadata">
+            <source src="videos/vid3.mp4" type="video/mp4" />
+          </video>
+          <button class="video-play-btn" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
+          </button>
+          <div class="video-caption">This smile is my whole favorite thing</div>
+        </div>
+
+        <!-- Video 4 -->
+        <div class="video-card reveal-up" style="--delay:0.2s">
+          <video class="memory-video" autoplay muted loop playsinline preload="metadata">
+            <source src="videos/vid4.mp4" type="video/mp4" />
+          </video>
+          <button class="video-play-btn" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
+          </button>
+          <div class="video-caption">Just us, caught on camera</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 5. LOVE STORY TIMELINE                          -->
+    <!-- ============================================= -->
+    <section id="story" class="section">
+      <div class="section-head reveal-up">
+        <p class="eyebrow">Chapter Two</p>
+        <h2 class="section-title">Our Love Story</h2>
+        <p class="section-desc">Every date has its own little story worth remembering.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-line" aria-hidden="true"></div>
+
+        <div class="timeline-item reveal-up">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content glass">
+            <span class="timeline-date">First Hello</span>
+            <h3>Where it all began</h3>
+            <p>A simple conversation that didn't feel simple at all. Replace with your own memory.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal-up">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content glass">
+            <span class="timeline-date">First Date</span>
+            <h3>Butterflies and quiet nerves</h3>
+            <p>We talked for hours and it still felt like minutes. Replace with your own memory.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal-up">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content glass">
+            <span class="timeline-date">First "I Love You"</span>
+            <h3>The words we finally said</h3>
+            <p>Three words, said quietly, that changed everything after. Replace with your own memory.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal-up">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content glass">
+            <span class="timeline-date">Today</span>
+            <h3>Still choosing you</h3>
+            <p>Every single day, again and again, I'd choose you. Replace with your own memory.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 6. COUNTDOWN / TIME TOGETHER                    -->
+    <!-- ============================================= -->
+    <section id="countdown" class="section countdown-section">
+      <div class="section-head reveal-up">
+        <p class="eyebrow">Time Well Spent</p>
+        <h2 class="section-title">Together Since</h2>
+        <!-- Change the date below (YYYY-MM-DDTHH:MM:SS) to the day you got together -->
+        <p class="section-desc" id="together-since-label">Counting every second since May 11, 2025</p>
+      </div>
+
+      <div class="countdown-grid glass" id="countdown-grid" data-start="2025-05-11T00:00:00">
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-years">00</span>
+          <span class="countdown-label">Years</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-months">00</span>
+          <span class="countdown-label">Months</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-days">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-hours">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-minutes">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-seconds">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 7. LOVE NOTES                                   -->
+    <!-- ============================================= -->
+    <section id="notes" class="section">
+      <div class="section-head reveal-up">
+        <p class="eyebrow">Little Words</p>
+        <h2 class="section-title">Love Notes</h2>
+        <p class="section-desc">A few things my heart keeps trying to tell you.</p>
+      </div>
+
+      <div class="notes-grid">
+        <div class="note-card glass reveal-up" style="--delay:0.05s">
+          <span class="note-mark">&ldquo;</span>
+          <p>You are my favorite notification, my favorite good morning, and my favorite goodnight.</p>
+        </div>
+        <div class="note-card glass reveal-up" style="--delay:0.1s">
+          <span class="note-mark">&ldquo;</span>
+          <p>Home isn't a place for me anymore. It's wherever you are.</p>
+        </div>
+        <div class="note-card glass reveal-up" style="--delay:0.15s">
+          <span class="note-mark">&ldquo;</span>
+          <p>I fall for you a little more, every single day — even on the ordinary ones.</p>
+        </div>
+        <div class="note-card glass reveal-up" style="--delay:0.2s">
+          <span class="note-mark">&ldquo;</span>
+          <p>Thank you for loving me on my hardest days, not just my easiest ones.</p>
+        </div>
+        <div class="note-card glass reveal-up" style="--delay:0.25s">
+          <span class="note-mark">&ldquo;</span>
+          <p>Every love song makes more sense to me now, because I know it's about you.</p>
+        </div>
+        <div class="note-card glass reveal-up" style="--delay:0.3s">
+          <span class="note-mark">&ldquo;</span>
+          <p>If I could relive one moment forever, I'd choose the one where I first held your hand.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 8. REASONS I LOVE YOU                           -->
+    <!-- ============================================= -->
+    <section id="reasons" class="section">
+      <div class="section-head reveal-up">
+        <p class="eyebrow">Just a Few</p>
+        <h2 class="section-title">Reasons I Love You</h2>
+        <p class="section-desc">A list that keeps growing, one day at a time.</p>
+      </div>
+
+      <ul class="reasons-list">
+        <li class="reason-item reveal-up" style="--delay:0.03s"><span class="reason-icon">💫</span><span>The way you laugh at your own jokes before you even finish them.</span></li>
+        <li class="reason-item reveal-up" style="--delay:0.06s"><span class="reason-icon">🌙</span><span>How you check in on me even on your most exhausting days.</span></li>
+        <li class="reason-item reveal-up" style="--delay:0.09s"><span class="reason-icon">🌷</span><span>Your kindness toward people who can never repay it.</span></li>
+        <li class="reason-item reveal-up" style="--delay:0.12s"><span class="reason-icon">🎶</span><span>The way you sing off-key and never once care.</span></li>
+        <li class="reason-item reveal-up" style="--delay:0.15s"><span class="reason-icon">🤍</span><span>How safe and calm I feel, just holding your hand.</span></li>
+        <li class="reason-item reveal-up" style="--delay:0.18s"><span class="reason-icon">🔥</span><span>Your quiet strength on the days that ask the most of you.</span></li>
+        <li class="reason-item reveal-up" style="--delay:0.21s"><span class="reason-icon">📖</span><span>How you remember tiny things I mentioned once, weeks ago.</span></li>
+        <li class="reason-item reveal-up" style="--delay:0.24s"><span class="reason-icon">💞</span><span>Simply — because you're you, and that's more than enough.</span></li>
+      </ul>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 9. SURPRISE BUTTON                              -->
+    <!-- ============================================= -->
+    <section id="surprise" class="section surprise-section">
+      <div class="reveal-up">
+        <p class="eyebrow">One More Thing</p>
+        <h2 class="section-title">I Have a Little Surprise For You</h2>
+        <button class="btn btn-gold" id="surprise-btn">
+          <span>Tap For a Surprise</span>
+          <svg viewBox="0 0 24 24" fill="none" class="btn-heart"><path d="M12 20.5S3 14.9 3 8.9C3 5.6 5.6 3 8.9 3c1.9 0 3.7 1 4.8 2.6C14.8 4 16.6 3 18.5 3c3.3 0 5.9 2.6 5.9 5.9 0 6-9 11.6-9 11.6Z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <div class="surprise-modal" id="surprise-modal" aria-hidden="true">
+      <div class="surprise-modal-hearts" id="surprise-hearts" aria-hidden="true"></div>
+      <div class="surprise-modal-content glass">
+        <button class="surprise-close" id="surprise-close" aria-label="Close">&times;</button>
+        <p class="surprise-eyebrow">a whisper for you</p>
+        <h3>You are, and always will be, my favorite love story.</h3>
+        <p class="surprise-text">Out of every person, every city, every timeline this life could've given me — I'm endlessly grateful it gave me you.</p>
+        <p class="surprise-signature">— forever yours</p>
+      </div>
     </div>
 
-    <div id="screen-shop" class="screen-ui hidden">
-        <h1>SHIP UPGRADE SHOP</h1>
-        <div class="subtitle">UPGRADE SHIP STATS PERMANENTLY WITH COINS! ✨</div>
-        
-        <div class="map-stats-bar" style="border-color: #ffcc33;">
-            <span class="global-coins-text">WALLET: ⭐ 0</span>
-            <span style="color: #ff66cc;">PERMANENT 👑</span>
-        </div>
-
-        <div class="shop-grid">
-            <div class="shop-item-card">
-                <div class="shop-item-details">
-                    <span class="shop-item-title">✨ Pure Attack Power</span>
-                    <span class="shop-item-desc" id="desc-perm-dmg">Increases bullet damage. (LVL 1)</span>
-                </div>
-                <button class="shop-buy-btn" id="buy-perm-dmg">UPGRADE <span class="cost" id="cost-perm-dmg">35</span></button>
-            </div>
-            <div class="shop-item-card">
-                <div class="shop-item-details">
-                    <span class="shop-item-title">🎯 Bullet Penetration (Pierce)</span>
-                    <span class="shop-item-desc" id="desc-perm-pierce">Bullet pierces through enemies! (LVL 0)</span>
-                </div>
-                <button class="shop-buy-btn" id="buy-perm-pierce">UPGRADE <span class="cost" id="cost-perm-pierce">50</span></button>
-            </div>
-        </div>
-
-        <div class="btn-row">
-            <button class="action-btn" id="close-shop-btn" style="flex: 1; background: #4a3b5c;">MAIN MENU 🏠</button>
-            <button class="action-btn" id="shop-back-to-map-btn" class="hidden" style="flex: 1; background: #99ffcc; color: #110e1a; font-weight: bold; display: none;">BACK TO MAP 🗺️</button>
-        </div>
-    </div>
-
-    <div id="screen-settings" class="screen-ui hidden">
-        <h1>GAME SETTINGS</h1>
-        <div class="subtitle">MANAGE AUDIO & DATA ⚙️</div>
-        
-        <div style="width: 100%; margin-top: 40px;">
-            <div class="settings-row">
-                <span>Sound Effects (SFX)</span>
-                <button id="btn-toggle-sfx" class="action-btn" style="padding: 6px 20px; font-size: 13px;">ON</button>
-            </div>
-            <div class="settings-row" style="border-color: #ff3333;">
-                <span>Clear Game Progress</span>
-                <button id="btn-reset-data" class="action-btn" style="background: #ff3333; padding: 6px 15px; font-size: 13px;">RESET DATA</button>
-            </div>
-        </div>
-
-        <button class="action-btn" id="close-settings-btn" style="margin-top: auto; width: 100%; background: #fff; color:#000;">MAIN MENU 🏠</button>
-    </div>
-
-    <div id="screen-status" class="screen-ui hidden">
-        <div class="overlay-center-box">
-            <h1 id="status-title">LEVEL CLEARED! ✨</h1>
-            <div class="subtitle" id="status-subtitle">Coins added to wallet!</div>
-            <div class="btn-row" style="width: 280px;">
-                <button class="action-btn" id="status-btn" style="flex: 1;">GO TO MAP 🗺️</button>
-                <button class="action-btn" id="status-shop-btn" style="flex: 1; background: #ffcc33; color: #221230;">UPGRADE SHOP 🛍️</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="ui-layer" class="hidden">
-        <div>
-            <div class="hud-top">
-                <div>
-                    <div id="wave-display">LEVEL: 1</div>
-                    <div id="hud-lives-container">❤️❤️❤️</div>
-                    <div id="powerup-timers-hud">
-                        <div id="timer-fastshoot-box" class="timer-bar-container hidden">
-                            <div id="timer-fastshoot-fill" class="timer-fill" style="background: #2ecc71;"></div>
-                            <span class="timer-label">⚡ FAST SHOOT</span>
-                        </div>
-                        <div id="timer-hyperdamage-box" class="timer-bar-container hidden">
-                            <div id="timer-hyperdamage-fill" class="timer-fill" style="background: #f1c40f;"></div>
-                            <span class="timer-label">🔥 HYPER DAMAGE</span>
-                        </div>
-                    </div>
-                </div>
-                <div id="gold-display">⭐ 0</div>
-            </div>
-            <div class="instructions" id="objective-text">Clear incoming waves! 🐾</div>
-        </div>
-
-        <div class="in-level-upgrades">
-            <button class="upgrade-btn" id="up-speed">
-                <span>SPEED 💕</span>
-                <span class="cost" id="cost-speed">12</span>
-            </button>
-            <button class="upgrade-btn" id="up-barrels">
-                <span id="label-barrels">BARRELS 🌸</span>
-                <span class="cost" id="cost-barrels">40</span>
-            </button>
-        </div>
-    </div>
-
-    <div id="screen-finale" class="screen-ui hidden">
-        <h1 style="font-size: 30px;">🏆 ULTIMATE VICTORY! 🏆</h1>
-        <div class="subtitle" style="color: #66ff99;">You cleared all 100 Levels! 🌟</div>
-        
-        <div class="love-letter">
-            <h2>My Ultimate Champion 👑</h2>
-            <div style="color: #ff3366; margin: 5px 0;">💖 🌸 💖</div>
-            <p>Unbelievable! Aap ne pure 100 levels aur saare dangerous boss creatures ko khatam kar diya! Mahnoor, you are officially the most legendary player ever.</p>
-            <p style="font-weight: bold; color: #d81b60; font-size: 16px;">I Love You To Infinity, Mahnoor! 💕</p>
-        </div>
-        <button class="action-btn" id="finale-btn" style="margin-top: 20px; background: #2ecc71;">RESET JOURNEY 🗺️</button>
-    </div>
-</div>
-
-<script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const WIDTH = 450; const HEIGHT = 750;
-    canvas.width = WIDTH; canvas.height = HEIGHT;
-
-    let gameState = "HOME"; 
-    let globalCoins = 0;
-    let highestUnlockedLevel = 1;
-    let clearedLevels = new Set();
-    const TOTAL_LEVELS = 100;
-    let sfxEnabled = true;
-    let shopReturnTarget = "HOME"; 
-
-    let permStats = { damageLevel: 1, penetrationLevel: 0 };
-    let playerLives = 3;
-
-    // Running Gameplay States
-    let currentLevelCoins = 0;
-    let selectedLevel = 1;
-    let waveTimer = 0;
-    let enemiesDefeatedThisWave = 0;
-    let totalEnemiesThisWave = 5;
-    let spawnInterval = 100;
-
-    let enemies = []; let bullets = []; let particles = []; let floatingTexts = []; let backgroundClouds = []; let powerups = [];
-    let boss = null;
-    const POWERUP_DURATION_MAX = 300;
-    let activePowerups = { fastShoot: 0, hyperDamage: 0 };
-    const cuteMessages = ["Wow! ✨", "Perfect! 💕", "Cute! 🌟", "Boom! 👑", "Pop! 🌸", "Super! ⭐"];
-
-    // Save/Load Setup
-    function saveGame() {
-        const payload = {
-            coins: globalCoins, highest: highestUnlockedLevel,
-            cleared: Array.from(clearedLevels), perm: permStats, sfx: sfxEnabled
-        };
-        localStorage.setItem('mahn_odyssey_v3_lives', JSON.stringify(payload));
-    }
-
-    function loadGame() {
-        const data = localStorage.getItem('mahn_odyssey_v3_lives');
-        if (data) {
-            try {
-                const p = JSON.parse(data);
-                globalCoins = p.coins || 0;
-                highestUnlockedLevel = p.highest || 1;
-                clearedLevels = new Set(p.cleared || []);
-                if (p.perm) permStats = p.perm;
-                if (p.sfx !== undefined) sfxEnabled = p.sfx;
-            } catch(e) { console.error(e); }
-        }
-        document.getElementById('btn-toggle-sfx').innerText = sfxEnabled ? "ON" : "OFF";
-    }
-
-    // Audio Context Sounds
-    let audioCtx = null;
-    function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-    function playShoot() {
-        if (!audioCtx || !sfxEnabled) return;
-        let osc = audioCtx.createOscillator(); let g = audioCtx.createGain(); osc.connect(g); g.connect(audioCtx.destination);
-        osc.type = 'triangle'; osc.frequency.setValueAtTime(activePowerups.fastShoot > 0 ? 750 : 550, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.07);
-        g.gain.setValueAtTime(0.08, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.07);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.07);
-    }
-    function playPop() {
-        if (!audioCtx || !sfxEnabled) return;
-        let osc = audioCtx.createOscillator(); let g = audioCtx.createGain(); osc.connect(g); g.connect(audioCtx.destination);
-        osc.type = 'sine'; osc.frequency.setValueAtTime(580, audioCtx.currentTime);
-        g.gain.setValueAtTime(0.12, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.06);
-    }
-    function playHurt() {
-        if (!audioCtx || !sfxEnabled) return;
-        let osc = audioCtx.createOscillator(); let g = audioCtx.createGain(); osc.connect(g); g.connect(audioCtx.destination);
-        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(180, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(60, audioCtx.currentTime + 0.2);
-        g.gain.setValueAtTime(0.2, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-    }
-    function playUpgrade() {
-        if (!audioCtx || !sfxEnabled) return;
-        [523, 659, 783, 1046].forEach((f, i) => {
-            setTimeout(() => {
-                let osc = audioCtx.createOscillator(); let g = audioCtx.createGain(); osc.connect(g); g.connect(audioCtx.destination);
-                osc.type = 'sine'; osc.frequency.setValueAtTime(f, audioCtx.currentTime);
-                g.gain.setValueAtTime(0.08, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-            }, i * 50);
-        });
-    }
-
-    // Mid Match Adjustments Structure
-    const matchTurret = {
-        x: WIDTH/2, y: HEIGHT - 130, fireCooldown: 0, inMatchSpeedLvl: 1, matchBarrels: 1,
-        get cooldownMax() {
-            let base = Math.max(6, 22 - this.inMatchSpeedLvl * 2);
-            return activePowerups.fastShoot > 0 ? Math.max(3, base * 0.45) : base;
-        },
-        get finalDamage() {
-            let basePerm = 1 + (permStats.damageLevel - 1) * 0.8; 
-            return activePowerups.hyperDamage > 0 ? basePerm * 2.5 : basePerm;
-        }
-    };
-    let localCosts = { speed: 12, barrels: 40 };
-    let isDragging = false;
-
-    // Background System Clouds
-    for(let i=0; i<6; i++) {
-        backgroundClouds.push({ x: Math.random()*WIDTH, y: Math.random()*(HEIGHT-200), size: Math.random()*25+20, speed: Math.random()*0.25+0.1 });
-    }
-
-    // Interaction Controls Touch handling
-    function handleMove(e) {
-        if (gameState !== "PLAYING") return;
-        const rect = canvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        matchTurret.x = Math.max(25, Math.min(WIDTH - 25, (clientX - rect.left) * (WIDTH / rect.width)));
-    }
-    canvas.addEventListener('mousedown', (e) => { initAudio(); isDragging = true; handleMove(e); });
-    window.addEventListener('mousemove', (e) => { if (isDragging) handleMove(e); });
-    window.addEventListener('mouseup', () => isDragging = false);
-    canvas.addEventListener('touchstart', (e) => { initAudio(); isDragging = true; handleMove(e); });
-    canvas.addEventListener('touchmove', (e) => { if (isDragging) handleMove(e); });
-    canvas.addEventListener('touchend', () => isDragging = false);
-
-    // Menu Router Connections
-    document.getElementById('home-start-btn').addEventListener('click', () => {
-        gameState = "MAP"; buildMapUI();
-        document.getElementById('screen-home').classList.add('hidden');
-        document.getElementById('screen-map').classList.remove('hidden');
-    });
-    document.getElementById('home-shop-btn').addEventListener('click', () => {
-        shopReturnTarget = "HOME"; showShopMenu();
-    });
-    document.getElementById('map-shop-btn').addEventListener('click', () => {
-        shopReturnTarget = "MAP"; showShopMenu();
-    });
-    document.getElementById('status-shop-btn').addEventListener('click', () => {
-        shopReturnTarget = "MAP"; showShopMenu();
-    });
-    document.getElementById('home-settings-btn').addEventListener('click', () => {
-        gameState = "SETTINGS";
-        document.getElementById('screen-home').classList.add('hidden');
-        document.getElementById('screen-settings').classList.remove('hidden');
-    });
-    document.getElementById('close-settings-btn').addEventListener('click', () => {
-        gameState = "HOME";
-        document.getElementById('screen-settings').classList.add('hidden');
-        document.getElementById('screen-home').classList.remove('hidden');
-    });
-    document.getElementById('map-back-btn').addEventListener('click', () => {
-        gameState = "HOME";
-        document.getElementById('screen-map').classList.add('hidden');
-        document.getElementById('screen-home').classList.remove('hidden');
-    });
-
-    // FIXED ROUTER ACTIONS FOR SEPARATE BUTTONS
-    document.getElementById('close-shop-btn').addEventListener('click', () => {
-        document.getElementById('screen-shop').classList.add('hidden');
-        gameState = "HOME"; 
-        document.getElementById('screen-home').classList.remove('hidden');
-    });
-    
-    document.getElementById('shop-back-to-map-btn').addEventListener('click', () => {
-        document.getElementById('screen-shop').classList.add('hidden');
-        gameState = "MAP"; buildMapUI(); 
-        document.getElementById('screen-map').classList.remove('hidden');
-    });
-
-    document.getElementById('status-btn').addEventListener('click', () => {
-        gameState = "MAP"; buildMapUI();
-        document.getElementById('screen-status').classList.add('hidden');
-        document.getElementById('screen-map').classList.remove('hidden');
-    });
-
-    // Settings Functionality
-    document.getElementById('btn-toggle-sfx').addEventListener('click', () => {
-        sfxEnabled = !sfxEnabled;
-        document.getElementById('btn-toggle-sfx').innerText = sfxEnabled ? "ON" : "OFF";
-        saveGame();
-    });
-    document.getElementById('btn-reset-data').addEventListener('click', () => {
-        if(confirm("Are you sure you want to completely reset all levels, upgrades, and coins?")) {
-            clearedLevels.clear(); highestUnlockedLevel = 1; globalCoins = 0;
-            permStats = { damageLevel: 1, penetrationLevel: 0 }; saveGame();
-            alert("Data reset successfully!"); window.location.reload();
-        }
-    });
-
-    // Shop Purchasing Router Upgrades
-    document.getElementById('buy-perm-dmg').addEventListener('click', () => buyPermanent('damage'));
-    document.getElementById('buy-perm-pierce').addEventListener('click', () => buyPermanent('pierce'));
-
-    document.getElementById('up-speed').addEventListener('click', () => {
-        if(currentLevelCoins >= localCosts.speed) {
-            currentLevelCoins -= localCosts.speed; matchTurret.inMatchSpeedLvl++;
-            localCosts.speed = Math.floor(localCosts.speed * 1.6); updateMatchUI(); playUpgrade();
-        }
-    });
-    document.getElementById('up-barrels').addEventListener('click', () => {
-        if(currentLevelCoins >= localCosts.barrels && matchTurret.matchBarrels < 3) {
-            currentLevelCoins -= localCosts.barrels; matchTurret.matchBarrels++;
-            if(matchTurret.matchBarrels === 2) localCosts.barrels = 90;
-            updateMatchUI(); playUpgrade();
-        }
-    });
-
-    document.getElementById('finale-btn').addEventListener('click', () => {
-        clearedLevels.clear(); highestUnlockedLevel = 1; globalCoins = 0;
-        permStats = { damageLevel: 1, penetrationLevel: 0 }; saveGame();
-        document.getElementById('screen-finale').classList.add('hidden');
-        gameState = "HOME"; document.getElementById('screen-home').classList.remove('hidden');
-    });
-
-    function showShopMenu() {
-        gameState = "SHOP"; updateShopUI();
-        document.getElementById('screen-home').classList.add('hidden');
-        document.getElementById('screen-map').classList.add('hidden');
-        document.getElementById('screen-status').classList.add('hidden');
-        document.getElementById('screen-shop').classList.remove('hidden');
-        
-        // Target settings layout visibility configuration
-        const mainMenuBtn = document.getElementById('close-shop-btn');
-        const backToMapBtn = document.getElementById('shop-back-to-map-btn');
-        
-        if(shopReturnTarget === "HOME") {
-            mainMenuBtn.style.display = "block";
-            backToMapBtn.style.display = "none";
-        } else {
-            mainMenuBtn.style.display = "none";
-            backToMapBtn.style.display = "block";
-        }
-    }
-
-    function buildMapUI() {
-        // Sync coin strings
-        Array.from(document.getElementsByClassName('global-coins-text')).forEach(el => {
-            el.innerText = `WALLET: ⭐ ${globalCoins}`;
-        });
-        document.getElementById('map-unlocked-count').innerText = `PROGRESS: ${clearedLevels.size}/${TOTAL_LEVELS}`;
-        
-        const grid = document.getElementById('map-menu'); grid.innerHTML = '';
-        
-        // Dynamic map node injection wrapper
-        for (let i = 1; i <= TOTAL_LEVELS; i++) {
-            const node = document.createElement('div'); node.className = 'level-node';
-            const isBossLevel = (i % 10 === 0);
-            if (isBossLevel) node.classList.add('boss-node');
-
-            if (clearedLevels.has(i)) {
-                node.classList.add('cleared'); node.innerHTML = `<span>${i}</span><span class="node-status">💖</span>`;
-            } else if (i <= highestUnlockedLevel) {
-                node.innerHTML = `<span>${i}</span><span class="node-status">${isBossLevel ? "BOSS 🔥" : "PLAY"}</span>`;
-            } else {
-                node.classList.add('locked'); node.innerHTML = `<span>${i}</span><span class="node-status">🔒</span>`;
-            }
-
-            node.addEventListener('click', () => { if (i <= highestUnlockedLevel) launchLevel(i); });
-            grid.appendChild(node);
-        }
-    }
-
-    function updateShopUI() {
-        Array.from(document.getElementsByClassName('global-coins-text')).forEach(el => {
-            el.innerText = `WALLET: ⭐ ${globalCoins}`;
-        });
-        
-        const dmgCost = permStats.damageLevel * 35;
-        document.getElementById('desc-perm-dmg').innerText = `Increases base ship heart blast damage. (LVL ${permStats.damageLevel})`;
-        document.getElementById('cost-perm-dmg').innerText = dmgCost;
-        document.getElementById('buy-perm-dmg').disabled = (globalCoins < dmgCost);
-
-        const pierceCost = (permStats.penetrationLevel + 1) * 50;
-        document.getElementById('desc-perm-pierce').innerText = `Allows blasts to punch through targets completely. (LVL ${permStats.penetrationLevel})`;
-        if(permStats.penetrationLevel >= 4) {
-            document.getElementById('cost-perm-pierce').innerText = "MAX";
-            document.getElementById('buy-perm-pierce').disabled = true;
-        } else {
-            document.getElementById('cost-perm-pierce').innerText = pierceCost;
-            document.getElementById('buy-perm-pierce').disabled = (globalCoins < pierceCost);
-        }
-    }
-
-    function buyPermanent(type) {
-        if(type === 'damage') {
-            const cost = permStats.damageLevel * 35;
-            if(globalCoins >= cost) { globalCoins -= cost; permStats.damageLevel++; }
-        } else if(type === 'pierce') {
-            const cost = (permStats.penetrationLevel + 1) * 50;
-            if(globalCoins >= cost && permStats.penetrationLevel < 4) { globalCoins -= cost; permStats.penetrationLevel++; }
-        }
-        playUpgrade(); saveGame(); updateShopUI();
-    }
-
-    // Launch Arena Level Execution Loops
-    function launchLevel(levelNum) {
-        initAudio(); selectedLevel = levelNum;
-        document.getElementById('screen-map').classList.add('hidden');
-        document.getElementById('ui-layer').classList.remove('hidden');
-
-        currentLevelCoins = 0; enemies = []; bullets = []; particles = []; floatingTexts = []; powerups = [];
-        activePowerups.fastShoot = 0; activePowerups.hyperDamage = 0;
-        
-        matchTurret.x = WIDTH/2; matchTurret.inMatchSpeedLvl = 1; matchTurret.matchBarrels = 1; matchTurret.fireCooldown = 0;
-        localCosts.speed = 12; localCosts.barrels = 40;
-        enemiesDefeatedThisWave = 0; boss = null; waveTimer = 0;
-        
-        playerLives = 3; 
-        updateLivesHUD();
-
-        const isBossLevel = (selectedLevel % 10 === 0);
-        if (isBossLevel) {
-            totalEnemiesThisWave = 1; let bossTier = selectedLevel / 10;
-            boss = {
-                id: 'boss-' + selectedLevel, x: WIDTH / 2, y: 130, vx: 1.2 + (bossTier * 0.15), size: 45 + (bossTier * 2),
-                hp: 120 + (bossTier * 110), maxHp: 120 + (bossTier * 110),
-                color: `hsl(${(bossTier * 35) % 360}, 95%, 60%)`, pulse: 0
-            };
-            document.getElementById('objective-text').innerText = `💥 TIER ${bossTier} BOSS CHALLENGE! 💥`;
-        } else {
-            totalEnemiesThisWave = 4 + Math.floor(selectedLevel * 0.5);
-            spawnInterval = Math.max(25, 100 - (selectedLevel % 10) * 6);
-            document.getElementById('objective-text').innerText = `Defeat ${totalEnemiesThisWave} space variants!`;
-        }
-
-        updateMatchUI(); syncPowerupBarsDOM();
-        gameState = "PLAYING";
-    }
-
-    function updateLivesHUD() {
-        let text = ""; for(let i=0; i<playerLives; i++) text += "❤️";
-        if(playerLives <= 0) text = "💔";
-        document.getElementById('hud-lives-container').innerText = text;
-    }
-
-    function triggerDamageFlash() {
-        playHurt();
-        const flash = document.getElementById('damage-flash');
-        flash.style.opacity = "1";
-        let step = 0.1;
-        let anim = setInterval(() => {
-            let op = parseFloat(flash.style.opacity);
-            if(op <= 0) { clearInterval(anim); }
-            else { flash.style.opacity = (op - step).toString(); }
-        }, 30);
-    }
-
-    function updateMatchUI() {
-        document.getElementById('wave-display').innerText = `LVL: ${selectedLevel}`;
-        document.getElementById('gold-display').innerText = `⭐ ${currentLevelCoins}`;
-        document.getElementById('cost-speed').innerText = localCosts.speed;
-        
-        const bLabel = document.getElementById('label-barrels');
-        if(matchTurret.matchBarrels === 1) { bLabel.innerText = "DBL BARREL"; document.getElementById('cost-barrels').innerText = localCosts.barrels; }
-        else if(matchTurret.matchBarrels === 2) { bLabel.innerText = "TRPL BARREL"; document.getElementById('cost-barrels').innerText = localCosts.barrels; }
-        else { bLabel.innerText = "MAX BARRELS"; document.getElementById('cost-barrels').innerText = "MAX"; }
-        
-        document.getElementById('up-speed').disabled = (currentLevelCoins < localCosts.speed);
-        document.getElementById('up-barrels').disabled = (currentLevelCoins < localCosts.barrels || matchTurret.matchBarrels >= 3);
-    }
-
-    function syncPowerupBarsDOM() {
-        const fsBox = document.getElementById('timer-fastshoot-box');
-        fsBox.className = activePowerups.fastShoot > 0 ? 'timer-bar-container' : 'timer-bar-container hidden';
-        if(activePowerups.fastShoot > 0) document.getElementById('timer-fastshoot-fill').style.width = `${(activePowerups.fastShoot/POWERUP_DURATION_MAX)*100}%`;
-
-        const hdBox = document.getElementById('timer-hyperdamage-box');
-        hdBox.className = activePowerups.hyperDamage > 0 ? 'timer-bar-container' : 'timer-bar-container hidden';
-        if(activePowerups.hyperDamage > 0) document.getElementById('timer-hyperdamage-fill').style.width = `${(activePowerups.hyperDamage/POWERUP_DURATION_MAX)*100}%`;
-    }
-
-    function getCreatureColorAndStyle(lvl) {
-        let sector = Math.floor((lvl - 1) / 10); let hue = (sector * 36) % 360; 
-        return { color: `hsl(${hue}, 90%, 65%)`, accent: `hsl(${(hue + 40) % 360}, 100%, 50%)`, variantType: sector };
-    }
-
-    let idCounter = 0;
-    function spawnRegularEnemy() {
-        const x = Math.random() * (WIDTH - 100) + 50;
-        let hp = 1 + (selectedLevel * 0.95);
-        let speed = 0.65 + Math.random() * 0.35 + (selectedLevel * 0.015);
-        let hasShield = (selectedLevel > 5) && (Math.random() < 0.20);
-        let movement = (selectedLevel > 3 && Math.random() < 0.28) ? "ZIGZAG" : "STRAIGHT";
-        let style = getCreatureColorAndStyle(selectedLevel);
-
-        enemies.push({
-            id: 'e-' + (++idCounter), x, y: -40, startX: x, hp, maxHp: hp, speed,
-            color: style.color, accent: style.accent, vType: style.variantType,
-            size: 20 + Math.random() * 5, pulse: Math.random() * 10,
-            hasShield: hasShield, movement: movement, zigzagSeed: Math.random() * 100
-        });
-    }
-
-    function handleMatchVictory() {
-        clearedLevels.add(selectedLevel);
-        let rewardPayout = 15 + selectedLevel * 4; if(selectedLevel % 10 === 0) rewardPayout += 50;
-        globalCoins += rewardPayout;
-
-        if (selectedLevel === TOTAL_LEVELS) {
-            gameState = "FINALE"; saveGame(); document.getElementById('ui-layer').classList.add('hidden');
-            document.getElementById('screen-finale').classList.remove('hidden'); return;
-        }
-        if (selectedLevel === highestUnlockedLevel) highestUnlockedLevel = selectedLevel + 1;
-        saveGame();
-
-        gameState = "STATUS";
-        document.getElementById('status-title').innerText = `STAGE ${selectedLevel} PASSED! 🌸`;
-        document.getElementById('status-subtitle').innerText = `Earned Reward: ⭐ +${rewardPayout} Coins added to your permanent wallet!`;
-        document.getElementById('ui-layer').classList.add('hidden');
-        document.getElementById('screen-status').classList.remove('hidden');
-    }
-
-    function handleMatchFailure() {
-        gameState = "STATUS";
-        document.getElementById('status-title').innerText = "STAGE FAILED 🐾";
-        document.getElementById('status-subtitle').innerText = "Don't worry, upgrade permanently at the Ship Shop and try again! 💕";
-        document.getElementById('ui-layer').classList.add('hidden');
-        document.getElementById('screen-status').classList.remove('hidden');
-    }
-
-    function checkDropPowerup(x, y) {
-        if (Math.random() < 0.16) {
-            powerups.push({ x: x, y: y, type: Math.random() > 0.5 ? 'FAST_SHOOT' : 'HYPER_DAMAGE', speed: 1.7, size: 14, pulse: 0 });
-        }
-    }
-
-    function createExplosion(x, y, color, count=10, isHearts=false) {
-        for (let i = 0; i < count; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            particles.push({ x, y, vx: Math.cos(angle)*(Math.random()*3.5+1), vy: Math.sin(angle)*(Math.random()*3.5+1), size: Math.random()*3.5+2, color, alpha: 1, decay: Math.random()*0.015+0.01, isHeart: isHearts || Math.random()>0.5 });
-        }
-    }
-
-    function createFloatingText(x, y, text, color, isBig=false) {
-        floatingTexts.push({ x, y, text, color, alpha: 1, life: isBig ? 55 : 35, fontSize: isBig ? 15 : 12, isBig });
-    }
-
-    // Compute Math Translation Updates
-    function update() {
-        // Universal clouds movement everywhere
-        for (let cloud of backgroundClouds) {
-            cloud.y += cloud.speed; if (cloud.y > HEIGHT) { cloud.y = -40; cloud.x = Math.random()*WIDTH; }
-        }
-
-        if (gameState === "FINALE") {
-            if(Math.random() < 0.08) createExplosion(Math.random()*WIDTH, -20, `hsl(${Math.random()*360}, 100%, 75%)`, 2, true);
-            for(let p of particles) { p.x += p.vx*0.5; p.y += Math.max(1, p.vy + 1.2); p.alpha -= 0.005; }
-            particles = particles.filter(p => p.alpha > 0); return;
-        }
-
-        if (gameState !== "PLAYING") return;
-
-        waveTimer++;
-        if (activePowerups.fastShoot > 0) activePowerups.fastShoot--;
-        if (activePowerups.hyperDamage > 0) activePowerups.hyperDamage--;
-        if (waveTimer % 10 === 0) syncPowerupBarsDOM();
-
-        if (enemiesDefeatedThisWave >= totalEnemiesThisWave) { handleMatchVictory(); return; }
-
-        // Spawning Engines
-        if (selectedLevel % 10 !== 0) {
-            if (waveTimer % spawnInterval === 0 && (enemies.length + enemiesDefeatedThisWave) < totalEnemiesThisWave) { spawnRegularEnemy(); }
-        } else if (boss && waveTimer % 90 === 0) {
-            let style = getCreatureColorAndStyle(selectedLevel);
-            enemies.push({ id: 'minion-'+(++idCounter), x: boss.x, y: boss.y + 35, startX: boss.x, hp: selectedLevel * 0.3, maxHp: selectedLevel * 0.3, speed: 1.5, color: style.accent, accent: style.color, vType: style.variantType, size: 16, pulse: Math.random()*5, hasShield: false, movement: "STRAIGHT" });
-        }
-
-        if(boss) {
-            boss.pulse += 0.06; boss.x += boss.vx;
-            if(boss.x - boss.size < 15 || boss.x + boss.size > WIDTH - 15) boss.vx *= -1;
-        }
-
-        if (matchTurret.fireCooldown > 0) matchTurret.fireCooldown--;
-
-        if (matchTurret.fireCooldown <= 0) {
-            playShoot();
-            if (matchTurret.matchBarrels === 1) {
-                bullets.push({ x: matchTurret.x, y: matchTurret.y - 20, vx: 0, vy: -8, damage: matchTurret.finalDamage, hitTargets: [] });
-            } else if (matchTurret.matchBarrels === 2) {
-                bullets.push({ x: matchTurret.x - 10, y: matchTurret.y - 20, vx: 0, vy: -8, damage: matchTurret.finalDamage, hitTargets: [] });
-                bullets.push({ x: matchTurret.x + 10, y: matchTurret.y - 20, vx: 0, vy: -8, damage: matchTurret.finalDamage, hitTargets: [] });
-            } else {
-                bullets.push({ x: matchTurret.x - 15, y: matchTurret.y - 20, vx: -0.7, vy: -8, damage: matchTurret.finalDamage, hitTargets: [] });
-                bullets.push({ x: matchTurret.x, y: matchTurret.y - 22, vx: 0, vy: -8.5, damage: matchTurret.finalDamage, hitTargets: [] });
-                bullets.push({ x: matchTurret.x + 15, y: matchTurret.y - 20, vx: 0.7, vy: -8, damage: matchTurret.finalDamage, hitTargets: [] });
-            }
-            matchTurret.fireCooldown = matchTurret.cooldownMax;
-        }
-
-        for(let i = powerups.length - 1; i >= 0; i--) {
-            let p = powerups[i]; p.y += p.speed; p.pulse += 0.1;
-            if (p.y > HEIGHT + 20) { powerups.splice(i,1); continue; }
-            if (Math.sqrt((p.x - matchTurret.x)**2 + (p.y - matchTurret.y)**2) < p.size + 24) {
-                playUpgrade();
-                if(p.type === 'FAST_SHOOT') { activePowerups.fastShoot = POWERUP_DURATION_MAX; createFloatingText(matchTurret.x, matchTurret.y-35, "🚀 SPEED RUSH!", '#66ff99', true); }
-                else { activePowerups.hyperDamage = POWERUP_DURATION_MAX; createFloatingText(matchTurret.x, matchTurret.y-35, "🔥 HYPER ATTACK!", '#ffcc33', true); }
-                powerups.splice(i, 1); syncPowerupBarsDOM();
-            }
-        }
-
-        // Bullets logic
-        for (let i = bullets.length - 1; i >= 0; i--) {
-            let b = bullets[i]; b.x += b.vx; b.y += b.vy;
-            if (b.y < -20 || b.x < -20 || b.x > WIDTH + 20) { bullets.splice(i, 1); continue; }
-
-            let bDestroyed = false;
-            if (boss && !b.hitTargets.includes(boss.id)) {
-                if (Math.sqrt((b.x - boss.x)**2 + (b.y - boss.y)**2) < boss.size + 8) {
-                    boss.hp -= b.damage; createExplosion(b.x, b.y, '#fff', 4, false); b.hitTargets.push(boss.id);
-                    if (b.hitTargets.length > permStats.penetrationLevel) { bullets.splice(i,1); bDestroyed = true; }
-                    if (boss.hp <= 0) { enemiesDefeatedThisWave++; createExplosion(boss.x, boss.y, boss.color, 65, true); checkDropPowerup(boss.x, boss.y); boss = null; playPop(); }
-                }
-            }
-            if (bDestroyed) continue;
-
-            for (let j = enemies.length - 1; j >= 0; j--) {
-                let e = enemies[j];
-                if (!b.hitTargets.includes(e.id)) {
-                    if (Math.sqrt((b.x - e.x)**2 + (b.y - e.y)**2) < e.size + 8) {
-                        b.hitTargets.push(e.id);
-                        if (e.hasShield) {
-                            e.hasShield = false; createExplosion(e.x, e.y, '#00ffff', 8, false); playPop();
-                            if (b.hitTargets.length > permStats.penetrationLevel) { bullets.splice(i,1); bDestroyed = true; } break;
-                        }
-                        e.hp -= b.damage; createExplosion(b.x, b.y, '#fff', 3, false);
-                        if (e.hp <= 0) {
-                            let matchReward = Math.floor(2 + Math.random()*2); currentLevelCoins += matchReward; updateMatchUI();
-                            if (selectedLevel % 10 !== 0) enemiesDefeatedThisWave++; playPop();
-                            createFloatingText(e.x, e.y-15, cuteMessages[Math.floor(Math.random()*cuteMessages.length)], '#ff99cc', false);
-                            createExplosion(e.x, e.y, e.color, 15, true); checkDropPowerup(e.x, e.y); enemies.splice(j, 1);
-                        }
-                        if (b.hitTargets.length > permStats.penetrationLevel) { bullets.splice(i,1); bDestroyed = true; } break;
-                    }
-                }
-            }
-        }
-
-        // Monsters Movement & 3-Lives Deduction Tracking Rule
-        for (let i = enemies.length - 1; i >= 0; i--) {
-            let e = enemies[i]; e.y += e.speed; e.pulse += 0.08;
-            if (e.movement === "ZIGZAG") e.x = e.startX + Math.sin((e.y / 25) + e.zigzagSeed) * 40;
-            
-            // Check cross line boundary zone
-            if (e.y > matchTurret.y + 35) {
-                enemies.splice(i, 1); 
-                playerLives--;
-                updateLivesHUD();
-                triggerDamageFlash();
-                
-                if (selectedLevel % 10 !== 0) {
-                    enemiesDefeatedThisWave++;
-                }
-
-                if (playerLives <= 0) { handleMatchFailure(); return; }
-            }
-        }
-
-        if (boss && boss.y > matchTurret.y + 15) {
-            playerLives = 0; updateLivesHUD(); triggerDamageFlash(); handleMatchFailure(); return;
-        }
-
-        for (let p of particles) { p.x += p.vx; p.y += p.vy; p.alpha -= p.decay; }
-        particles = particles.filter(p => p.alpha > 0);
-        for (let ft of floatingTexts) { ft.y -= 0.5; ft.life--; }
-        floatingTexts = floatingTexts.filter(ft => ft.life > 0);
-    }
-
-    function drawHeart(x, y, size, color, alpha=1) {
-        ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.beginPath();
-        ctx.moveTo(x, y + size/4); ctx.quadraticCurveTo(x, y, x - size/2, y); ctx.quadraticCurveTo(x - size, y, x - size, y + size/2);
-        ctx.quadraticCurveTo(x - size, y + size, x, y + size * 1.3); ctx.quadraticCurveTo(x + size, y + size, x + size, y + size/2);
-        ctx.quadraticCurveTo(x + size, y, x + size/2, y); ctx.quadraticCurveTo(x, y, x, y + size/4); ctx.fill(); ctx.restore();
-    }
-
-    function drawEvolvedBlob(x, y, size, color, accent, vType, pulseVal, isBoss=false, hasShield=false) {
-        ctx.save(); ctx.translate(x, y);
-        if (hasShield) {
-            ctx.save(); ctx.strokeStyle = '#00ffff'; ctx.lineWidth = 2.5; ctx.setLineDash([4, 4]);
-            ctx.beginPath(); ctx.arc(0,0, size + 10, 0, Math.PI*2); ctx.stroke(); ctx.restore();
-        }
-        ctx.scale(1 - Math.sin(pulseVal)*0.03, 1 + Math.sin(pulseVal)*0.04);
-        ctx.fillStyle = color; ctx.strokeStyle = accent; ctx.lineWidth = isBoss ? 5 : 3;
-        
-        ctx.beginPath();
-        if(vType % 3 === 0) { ctx.arc(0, 0, size, 0, Math.PI*2); ctx.fill(); ctx.stroke(); } 
-        else if(vType % 3 === 1) {
-            ctx.moveTo(-size, 0); ctx.quadraticCurveTo(0, -size*1.3, size, 0); ctx.lineTo(size*0.8, size); ctx.lineTo(-size*0.8, size);
-            ctx.closePath(); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = accent; ctx.beginPath(); ctx.moveTo(-size*0.5, -size*0.6); ctx.lineTo(-size*0.8, -size*1.2); ctx.lineTo(-size*0.2, -size*0.7); ctx.fill();
-            ctx.beginPath(); ctx.moveTo(size*0.5, -size*0.6); ctx.lineTo(size*0.8, -size*1.2); ctx.lineTo(size*0.2, -size*0.7); ctx.fill();
-        } else {
-            ctx.rect(-size, -size*0.7, size*2, size*1.6); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = accent; ctx.beginPath(); ctx.moveTo(-size, -size*0.7); ctx.lineTo(-size*0.6, -size*1.2); ctx.lineTo(-size*0.2, -size*0.7); ctx.fill();
-            ctx.beginPath(); ctx.moveTo(size, -size*0.7); ctx.lineTo(size*0.6, -size*1.2); ctx.lineTo(size*0.2, -size*0.7); ctx.fill();
-        }
-
-        ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-size*0.3, -size*0.05, isBoss?8:3.5, 0, Math.PI*2); ctx.arc(size*0.3, -size*0.05, isBoss?8:3.5, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-size*0.33, -size*0.08, isBoss?3:1.5, 0, Math.PI*2); ctx.arc(size*0.27, -size*0.08, isBoss?3:1.5, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = 'rgba(255,100,150,0.5)'; ctx.beginPath(); ctx.arc(-size*0.5, size*0.15, isBoss?7:3, 0, Math.PI*2); ctx.arc(size*0.5, size*0.15, isBoss?7:3, 0, Math.PI*2); ctx.fill();
-        ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, size*0.1, isBoss?8:3, 0, Math.PI); ctx.stroke();
-        
-        if (isBoss) {
-            ctx.fillStyle = '#ffcc00'; ctx.beginPath(); ctx.moveTo(-16, -size); ctx.lineTo(-22, -size-12); ctx.lineTo(-8, -size-4); ctx.lineTo(0, -size-20); ctx.lineTo(8, -size-4); ctx.lineTo(22, -size-12); ctx.lineTo(16, -size); ctx.closePath(); ctx.fill();
-        }
-        ctx.restore();
-    }
-
-    function draw() {
-        let subRegionHue = gameState === "PLAYING" ? Math.floor((selectedLevel - 1) / 10) * 36 : 10;
-        ctx.fillStyle = `hsl(${subRegionHue + 240}, 30%, 8%)`; ctx.fillRect(0, 0, WIDTH, HEIGHT);
-
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-        for (let cl of backgroundClouds) { ctx.beginPath(); ctx.arc(cl.x, cl.y, cl.size, 0, Math.PI*2); ctx.fill(); }
-
-        if (gameState === "FINALE") {
-            for(let p of particles) { if (p.isHeart) drawHeart(p.x, p.y, p.size*1.5, p.color, p.alpha); } return;
-        }
-        if (gameState !== "PLAYING") return;
-
-        ctx.strokeStyle = 'rgba(255, 51, 102, 0.35)'; ctx.lineWidth = 3; ctx.setLineDash([8, 4]);
-        ctx.beginPath(); ctx.moveTo(0, matchTurret.y + 35); ctx.lineTo(WIDTH, matchTurret.y + 35); ctx.stroke(); ctx.setLineDash([]);
-
-        for(let p of powerups) {
-            ctx.save(); ctx.translate(p.x, p.y); ctx.scale(1+Math.sin(p.pulse)*0.1, 1+Math.sin(p.pulse)*0.1);
-            ctx.fillStyle = p.type === 'FAST_SHOOT' ? '#66ff99' : '#ffcc33'; ctx.beginPath(); ctx.arc(0,0, p.size, 0, Math.PI*2); ctx.fill();
-            ctx.font = "12px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillStyle="#000"; ctx.fillText(p.type === 'FAST_SHOOT'?'⚡':'🔥', 0,0); ctx.restore();
-        }
-
-        if(boss) {
-            drawEvolvedBlob(boss.x, boss.y, boss.size, boss.color, '#fff', Math.floor((selectedLevel-1)/10), boss.pulse, true, false);
-            ctx.fillStyle = 'rgba(255,255,255,0.1)'; ctx.fillRect(WIDTH/2 - 120, boss.y - boss.size - 25, 240, 8);
-            ctx.fillStyle = '#ff3366'; ctx.fillRect(WIDTH/2 - 120, boss.y - boss.size - 25, 240 * (boss.hp / boss.maxHp), 8);
-        }
-
-        for (let e of enemies) {
-            drawEvolvedBlob(e.x, e.y, e.size, e.color, e.accent, e.vType, e.pulse, false, e.hasShield);
-            if (e.hp < e.maxHp) {
-                ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.fillRect(e.x - e.size, e.y - e.size - 12, e.size * 2, 4);
-                ctx.fillStyle = '#ff66cc'; ctx.fillRect(e.x - e.size, e.y - e.size - 12, (e.size * 2) * (e.hp / e.maxHp), 4);
-            }
-        }
-
-        // Space Ship Avatar Render
-        ctx.save(); ctx.translate(matchTurret.x, matchTurret.y);
-        ctx.fillStyle = activePowerups.hyperDamage > 0 ? '#ffcc33' : '#66ff99'; ctx.beginPath(); ctx.arc(0, 5, 20, 0, Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.moveTo(-14, -4); ctx.quadraticCurveTo(0, -32, 0, -35); ctx.quadraticCurveTo(0, -32, 14, -4); ctx.closePath();
-        ctx.fillStyle = activePowerups.hyperDamage > 0 ? '#cc8800' : '#3db765'; ctx.fill();
-        ctx.fillStyle='#000'; ctx.beginPath(); ctx.arc(-6,2,3.5,0,Math.PI*2); ctx.arc(6,2,3.5,0,Math.PI*2); ctx.fill();
-        ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(0,5,3,0,Math.PI); ctx.stroke(); ctx.restore();
-
-        for (let b of bullets) {
-            let size = activePowerups.hyperDamage > 0 ? 11 : 7;
-            drawHeart(b.x, b.y - 4, size, activePowerups.hyperDamage > 0 ? '#ff3333' : '#ff99cc');
-        }
-
-        for (let p of particles) { if (p.isHeart) drawHeart(p.x, p.y, p.size*1.3, p.color, p.alpha); else { ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); ctx.restore(); } }
-        for (let ft of floatingTexts) { ctx.save(); ctx.globalAlpha = ft.alpha; ctx.font="bold 12px Arial"; ctx.fillStyle = ft.color; ctx.fillText(ft.text, ft.x - 10, ft.y); ctx.restore(); }
-    }
-
-    function loop() { update(); draw(); requestAnimationFrame(loop); }
-
-    loadGame();
-    loop();
-</script>
+    <!-- ============================================= -->
+    <!-- 10. FINAL SECTION                               -->
+    <!-- ============================================= -->
+    <footer id="final" class="final-section">
+      <div class="final-glow" aria-hidden="true"></div>
+      <p class="final-quote reveal-up">
+        "Being deeply loved by someone gives you strength,<br class="quote-break" />
+        while loving someone deeply gives you courage."
+      </p>
+      <h2 class="final-title reveal-up">Forever &amp; Always <span class="heart-pulse">❤</span></h2>
+      <p class="final-sign reveal-up">made with love, one memory at a time</p>
+    </footer>
+
+  </main>
+
+  <!-- Back to top -->
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <script src="script.js"></script>
 </body>
-</html>
+</html>a
