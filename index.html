@@ -1,443 +1,1208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur-Latn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Every Memory With You</title>
-  <meta name="description" content="A love story, told in memories." />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Girlfriend's Day, Chuuze 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Poppins:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#150a13;
+    --bg-mid:#2b1524;
+    --bg-glow:#4a1f34;
+    --wine:#7a2d42;
+    --rose-gold:#d9a066;
+    --rose-gold-bright:#f0bd82;
+    --blush:#f3c9d4;
+    --cream:#f7ecdd;
+    --ink:#241017;
+  }
 
-  <!-- Google Fonts: Playfair Display (romantic serif) + Cormorant + Poppins (soft sans) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
 
-  <link rel="stylesheet" href="style.css" />
+  body{
+    background:
+      radial-gradient(ellipse at 18% 12%, var(--bg-glow) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 78%, #3a1a2e 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, #241129 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-deep) 0%, #1d1019 50%, var(--bg-deep) 100%);
+    color:var(--cream);
+    font-family:'Poppins', sans-serif;
+    overflow-x:hidden;
+    min-height:100vh;
+    position:relative;
+  }
+
+  /* ---------- PRELOADER ---------- */
+  #preloader{
+    position:fixed; inset:0; z-index:200;
+    background:var(--bg-deep);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transition:opacity 0.9s ease, visibility 0.9s ease;
+  }
+  #preloader.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  .pre-heart{ width:64px; height:64px; position:relative; }
+  .pre-heart svg{ width:100%; height:100%; }
+  .pre-heart .outline{ fill:none; stroke:rgba(217,160,102,0.35); stroke-width:1.5; }
+  .pre-heart .fill{ fill:var(--rose-gold-bright); }
+  .pre-fill-mask{ animation:preFill 1.6s ease-in-out infinite; }
+  @keyframes preFill{
+    0%{ transform:translateY(29px); }
+    50%{ transform:translateY(0px); }
+    100%{ transform:translateY(29px); }
+  }
+  .pre-label{
+    margin-top:22px; font-family:'Cormorant Garamond', serif; font-style:italic;
+    letter-spacing:3px; font-size:14px; color:var(--blush); opacity:0.75;
+  }
+
+  /* ---------- AURORA BACKGROUND ---------- */
+  .aurora{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+  .aurora span{
+    position:absolute; border-radius:50%; filter:blur(70px); opacity:0.35;
+    animation:auroraMove 22s ease-in-out infinite;
+  }
+  .aurora span:nth-child(1){ width:38vw; height:38vw; background:#7a2d42; top:-10%; left:-8%; animation-duration:26s; }
+  .aurora span:nth-child(2){ width:30vw; height:30vw; background:#4a1f34; top:55%; left:70%; animation-duration:20s; animation-delay:-6s; }
+  .aurora span:nth-child(3){ width:26vw; height:26vw; background:#3a1a2e; top:75%; left:10%; animation-duration:24s; animation-delay:-12s; }
+  .aurora span:nth-child(4){ width:22vw; height:22vw; background:#d9a066; top:10%; left:65%; opacity:0.12; animation-duration:30s; animation-delay:-4s; }
+  @keyframes auroraMove{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    33%{ transform:translate(6%, 8%) scale(1.12); }
+    66%{ transform:translate(-8%, -4%) scale(0.94); }
+  }
+
+  /* ---------- SIDE NAV DOTS ---------- */
+  .side-nav{
+    position:fixed; right:26px; top:50%; transform:translateY(-50%); z-index:60;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .side-nav button{
+    width:9px; height:9px; border-radius:50%; border:1px solid rgba(247,236,221,0.4);
+    background:transparent; cursor:pointer; padding:0; position:relative; transition:all .35s ease;
+  }
+  .side-nav button::after{
+    content:attr(data-label);
+    position:absolute; right:20px; top:50%; transform:translateY(-50%);
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:13px;
+    color:var(--blush); white-space:nowrap; opacity:0; transition:opacity .3s ease;
+  }
+  .side-nav button:hover::after{ opacity:0.85; }
+  .side-nav button.active{ background:var(--rose-gold-bright); border-color:var(--rose-gold-bright); box-shadow:0 0 10px rgba(217,160,102,0.7); transform:scale(1.3); }
+  @media (max-width:720px){ .side-nav{ display:none; } }
+
+  /* ---------- KINETIC HERO WORDS ---------- */
+  .kinetic-word{ display:inline-block; opacity:0; transform:translateY(24px) rotate(2deg); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .kinetic-word.show{ opacity:1; transform:translateY(0) rotate(0); }
+
+  /* film grain overlay for premium texture */
+  .grain{
+    position:fixed; inset:0; z-index:3; pointer-events:none;
+    opacity:0.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  #hearts-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+
+  /* scroll progress */
+  .progress-bar{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--rose-gold), var(--blush));
+    z-index:80; transition:width 0.1s ease-out;
+    box-shadow:0 0 10px rgba(217,160,102,0.6);
+  }
+
+  /* custom cursor */
+  .cursor-dot, .cursor-ring{
+    position:fixed; top:0; left:0; pointer-events:none; z-index:90;
+    border-radius:50%; transform:translate(-50%,-50%);
+  }
+  .cursor-dot{ width:6px; height:6px; background:var(--rose-gold-bright); }
+  .cursor-ring{ width:32px; height:32px; border:1px solid rgba(217,160,102,0.55); transition:transform .15s ease, opacity .3s ease; }
+  body.no-cursor-fx{ }
+  @media (pointer:fine){
+    body.cursor-active{ cursor:none; }
+    body.cursor-active a, body.cursor-active button, body.cursor-active .envelope, body.cursor-active .flip-card{ cursor:none; }
+  }
+
+  .sound-toggle{
+    position:fixed; top:22px; right:22px; z-index:50;
+    width:52px; height:52px; border-radius:50%;
+    background:rgba(247,236,221,0.08);
+    border:1px solid rgba(217,160,102,0.45);
+    backdrop-filter:blur(10px);
+    color:var(--rose-gold); font-size:20px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all .35s ease;
+  }
+  .sound-toggle:hover{ background:rgba(217,160,102,0.18); transform:scale(1.08); }
+  .sound-toggle.playing{ box-shadow:0 0 22px rgba(217,160,102,0.55); }
+
+  .eq-bars{
+    position:fixed; top:34px; right:82px; z-index:50;
+    display:flex; align-items:flex-end; gap:3px; height:24px;
+    opacity:0; transition:opacity .4s ease;
+  }
+  .eq-bars.active{ opacity:1; }
+  .eq-bars span{ width:3px; background:var(--rose-gold-bright); border-radius:2px; animation:eqBounce 1s ease-in-out infinite; }
+  .eq-bars span:nth-child(1){ animation-delay:0s; }
+  .eq-bars span:nth-child(2){ animation-delay:0.2s; }
+  .eq-bars span:nth-child(3){ animation-delay:0.4s; }
+  @keyframes eqBounce{ 0%,100%{ height:5px; } 50%{ height:22px; } }
+
+  .cursor-heart{ position:fixed; z-index:88; pointer-events:none; font-size:12px; will-change:transform,opacity; }
+
+  section{
+    position:relative; z-index:2; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:80px 20px; text-align:center;
+  }
+
+  .reveal{ opacity:0; transform:translateY(36px); transition:opacity 0.9s cubic-bezier(.2,.8,.2,1), transform 0.9s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+  .reveal.d1{ transition-delay:.12s; } .reveal.d2{ transition-delay:.24s; } .reveal.d3{ transition-delay:.36s; }
+
+  /* ---------- HERO ---------- */
+  .hero-inner{ max-width:1000px; }
+  .eyebrow{
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:clamp(15px,2vw,19px); letter-spacing:4px;
+    color:var(--blush); opacity:0.85; margin-bottom:20px;
+    text-transform:uppercase;
+  }
+  .hero-title{
+    font-family:'Playfair Display', serif; font-weight:800;
+    font-size:clamp(40px, 8vw, 88px); line-height:1.08;
+    background:linear-gradient(110deg, var(--cream) 10%, var(--rose-gold-bright) 35%, var(--blush) 55%, var(--rose-gold-bright) 75%, var(--cream) 95%);
+    background-size:250% auto;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:shimmer 7s linear infinite;
+  }
+  @keyframes shimmer{ to{ background-position:250% center; } }
+
+  .hero-script{
+    display:block; font-family:'Parisienne', cursive; font-size:clamp(34px,6vw,58px);
+    color:var(--rose-gold-bright); margin-top:6px; font-weight:400;
+  }
+
+  .hero-sub{ font-family:'Cormorant Garamond', serif; font-size:clamp(20px,2.6vw,28px); margin-top:26px; opacity:0.92; }
+  .hero-sub span{ color:var(--rose-gold); font-weight:600; }
+
+  .heart-mark{ width:60px; height:60px; margin-top:40px; animation:pulse 2.2s ease-in-out infinite; will-change:transform; }
+  @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:0.85; } 50%{ transform:scale(1.15); opacity:1; } }
+
+  .scroll-cue{
+    position:absolute; bottom:34px; font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:15px; letter-spacing:2px; color:var(--blush); opacity:0.7;
+    display:flex; flex-direction:column; align-items:center; gap:8px; animation:bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(8px);} }
+
+  /* ---------- STATEMENT ---------- */
+  .statement{
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:500;
+    font-size:clamp(24px,4.2vw,44px); line-height:1.5; max-width:840px; color:var(--cream);
+  }
+  .statement .accent{ color:var(--rose-gold-bright); font-weight:600; font-style:normal; }
+
+  /* ---------- MEMORY CARDS ---------- */
+  .gallery-title{ font-family:'Playfair Display', serif; font-size:clamp(28px,4.2vw,44px); margin-bottom:10px; }
+  .gallery-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--blush); opacity:0.85; font-size:17px; margin-bottom:56px; max-width:520px; }
+  .memory-row{
+    display:flex; flex-wrap:wrap; justify-content:center; align-items:stretch; gap:22px; max-width:1080px;
+  }
+  .memory-card{
+    position:relative; width:192px; padding:32px 20px 26px;
+    background:linear-gradient(165deg, rgba(247,236,221,0.07), rgba(247,236,221,0.02));
+    border:1px solid rgba(217,160,102,0.28); border-radius:18px;
+    backdrop-filter:blur(10px);
+    box-shadow:0 18px 40px rgba(0,0,0,0.35);
+    transform:rotate(var(--r,0deg));
+    transition:transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease, border-color .4s ease;
+  }
+  .memory-card:hover{
+    transform:rotate(0deg) translateY(-10px); border-color:rgba(217,160,102,0.65);
+    box-shadow:0 26px 54px rgba(0,0,0,0.45), 0 0 30px rgba(217,160,102,0.2); z-index:5;
+  }
+  .memory-badge{
+    width:64px; height:64px; margin:0 auto 20px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 32% 28%, rgba(217,160,102,0.28), rgba(122,45,66,0.35));
+    box-shadow:inset 0 0 0 1px rgba(217,160,102,0.35), 0 8px 18px rgba(0,0,0,0.3);
+  }
+  .memory-badge svg{ width:28px; height:28px; }
+  .memory-badge svg *{ fill:none; stroke:var(--rose-gold-bright); stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round; }
+  .memory-line{ width:26px; height:1px; background:rgba(217,160,102,0.4); margin:0 auto 14px; }
+  .memory-cap{ font-family:'Parisienne', cursive; font-size:19px; color:var(--cream); text-align:center; line-height:1.25; }
+  .gallery-note{ margin-top:44px; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:14px; color:rgba(247,236,221,0.45); max-width:480px; }
+
+
+
+  /* ---------- SCRATCH CARD ---------- */
+  .scratch-title{ font-family:'Playfair Display', serif; font-size:clamp(28px,4vw,42px); margin-bottom:10px; }
+  .scratch-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--blush); opacity:0.85; font-size:17px; margin-bottom:40px; }
+  .scratch-wrap{ position:relative; width:min(90vw,480px); height:240px; }
+  #scratchBase, #scratchCanvas{
+    position:absolute; top:0; left:0; width:100%; height:100%; border-radius:16px;
+    box-shadow:0 20px 46px rgba(0,0,0,0.45); border:1px solid rgba(217,160,102,0.3);
+  }
+  #scratchBase{ z-index:1; }
+  #scratchCanvas{ z-index:2; touch-action:none; cursor:grab; }
+  #scratchCanvas:active{ cursor:grabbing; }
+  .scratch-caption{ margin-top:18px; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:15px; color:var(--blush); opacity:0.7; }
+
+  /* ---------- SECTION DIVIDER ---------- */
+  .divider{ display:flex; align-items:center; gap:14px; width:min(70vw,220px); margin:0 auto 46px; opacity:0.55; }
+  .divider .line{ flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--rose-gold), transparent); }
+  .divider .mark{ font-size:12px; color:var(--rose-gold-bright); }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline-title{ font-family:'Playfair Display', serif; font-size:clamp(28px,4.2vw,44px); margin-bottom:10px; }
+  .timeline-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--blush); opacity:0.85; font-size:17px; margin-bottom:54px; }
+  .timeline{ position:relative; max-width:620px; width:100%; }
+  .timeline::before{
+    content:''; position:absolute; left:22px; top:6px; bottom:6px; width:1px;
+    background:linear-gradient(180deg, transparent, var(--rose-gold), transparent);
+  }
+  @media (min-width:620px){ .timeline::before{ left:50%; } }
+  .t-item{ position:relative; padding-left:56px; margin-bottom:44px; text-align:left; }
+  .t-item:last-child{ margin-bottom:0; }
+  .t-dot{
+    position:absolute; left:15px; top:4px; width:14px; height:14px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff, var(--rose-gold-bright));
+    box-shadow:0 0 14px rgba(217,160,102,0.6);
+  }
+  .t-date{ font-family:'Playfair Display', serif; font-size:15px; letter-spacing:1px; color:var(--rose-gold-bright); margin-bottom:6px; }
+  .t-text{ font-family:'Cormorant Garamond', serif; font-size:clamp(17px,2vw,20px); line-height:1.6; color:var(--cream); }
+  @media (min-width:620px){
+    .t-item:nth-child(odd){ padding-left:0; padding-right:calc(50% + 34px); text-align:right; }
+    .t-item:nth-child(odd) .t-dot{ left:auto; right:calc(50% - 7px); }
+    .t-item:nth-child(even){ padding-left:calc(50% + 34px); }
+    .t-item:nth-child(even) .t-dot{ left:calc(50% - 7px); }
+  }
+
+  /* ---------- COMPLIMENT GENERATOR ---------- */
+  .compliment-box{ margin-top:54px; display:flex; flex-direction:column; align-items:center; }
+  .compliment-btn{
+    font-family:'Poppins', sans-serif; font-size:14px; letter-spacing:0.5px;
+    background:rgba(217,160,102,0.12); border:1px solid rgba(217,160,102,0.4); color:var(--rose-gold-bright);
+    padding:12px 28px; border-radius:30px; cursor:pointer; transition:all .3s ease;
+  }
+  .compliment-btn:hover{ background:rgba(217,160,102,0.22); transform:translateY(-2px); }
+  .compliment-text{
+    margin-top:22px; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(18px,2.4vw,23px);
+    color:var(--blush); min-height:1.6em; max-width:480px; opacity:0; transition:opacity .5s ease;
+  }
+  .compliment-text.show{ opacity:1; }
+
+  /* ---------- MEMORY GAME ---------- */
+  .game-title{ font-family:'Playfair Display', serif; font-size:clamp(28px,4.2vw,44px); margin-bottom:10px; }
+  .game-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--blush); opacity:0.85; font-size:17px; margin-bottom:16px; }
+  .game-status{ font-family:'Cormorant Garamond', serif; font-size:16px; color:var(--rose-gold-bright); margin-bottom:28px; min-height:1.4em; }
+  .game-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; width:min(90vw,340px); }
+  .game-card{ aspect-ratio:1/1; perspective:800px; cursor:pointer; }
+  .game-card-inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.4,.2,.2,1); }
+  .game-card.flipped .game-card-inner, .game-card.matched .game-card-inner{ transform:rotateY(180deg); }
+  .game-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:12px;
+    display:flex; align-items:center; justify-content:center; font-size:26px;
+    border:1px solid rgba(217,160,102,0.3);
+  }
+  .game-front{ background:linear-gradient(150deg, rgba(217,160,102,0.15), rgba(122,45,66,0.3)); color:var(--rose-gold-bright); font-family:'Playfair Display', serif; }
+  .game-back{ background:linear-gradient(160deg,#fbf3e7,var(--cream)); transform:rotateY(180deg); }
+  .game-card.matched .game-back{ background:linear-gradient(160deg, #f0bd82, #d9a066); box-shadow:0 0 16px rgba(217,160,102,0.6); }
+  .game-reset{
+    margin-top:28px; font-family:'Poppins', sans-serif; font-size:13px; letter-spacing:0.5px;
+    background:transparent; border:1px solid rgba(247,236,221,0.4); color:var(--cream);
+    padding:10px 24px; border-radius:30px; cursor:pointer; transition:all .3s ease;
+  }
+  .game-reset:hover{ background:rgba(247,236,221,0.1); }
+
+  /* ---------- ENVELOPE ---------- */
+  .env-title{ font-family:'Playfair Display', serif; font-size:clamp(28px,4vw,42px); margin-bottom:10px; }
+  .env-hint{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:18px; color:var(--blush); opacity:0.8; margin-bottom:48px; }
+
+  .envelope-wrap{ perspective:1400px; width:min(88vw, 380px); }
+  .envelope{ position:relative; width:100%; aspect-ratio:3/2; cursor:pointer; }
+  .env-back{
+    position:absolute; inset:0; background:linear-gradient(160deg, #3a1c2e, #241017);
+    border:1px solid rgba(217,160,102,0.35); border-radius:10px; box-shadow:0 25px 60px rgba(0,0,0,0.5);
+  }
+  .env-ribbon{
+    position:absolute; left:50%; top:0; bottom:0; width:6px; transform:translateX(-50%);
+    background:linear-gradient(180deg, var(--rose-gold), var(--wine)); opacity:0.5; z-index:4;
+  }
+  .env-flap{
+    position:absolute; top:0; left:0; width:100%; height:52%;
+    background:linear-gradient(160deg, #4a2338, #2b1524);
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top center; transition:transform 0.9s cubic-bezier(.6,-0.2,.2,1.2);
+    z-index:5; border-radius:10px 10px 0 0;
+  }
+  .envelope.open .env-flap{ transform:rotateX(180deg); z-index:1; }
+  .env-seal{
+    position:absolute; top:38%; left:50%; transform:translate(-50%,-50%);
+    width:54px; height:54px; background:radial-gradient(circle at 35% 30%, #e3a85c, var(--wine) 75%);
+    border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.45); z-index:6; transition:transform 0.3s ease, opacity 0.4s ease;
+  }
+  .envelope:hover .env-seal{ transform:translate(-50%,-50%) scale(1.08); }
+  .envelope.open .env-seal{ opacity:0; }
+  .env-letter{
+    position:absolute; left:6%; bottom:6%; width:88%; height:80%;
+    background:linear-gradient(170deg, #fbf3e7, var(--cream)); color:var(--ink); border-radius:6px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.35); transform:translateY(0);
+    transition:transform 0.9s cubic-bezier(.2,.8,.2,1) 0.15s; z-index:3;
+    display:flex; align-items:center; justify-content:center; padding:10px;
+  }
+  .envelope.open .env-letter{ transform:translateY(-58%) scale(1.04); }
+  .env-letter-hint{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:14px; color:#8a5c46; letter-spacing:1px; }
+
+  .love-note{
+    display:none; max-width:640px; margin-top:40px;
+    background:rgba(247,236,221,0.06); border:1px solid rgba(217,160,102,0.35);
+    border-radius:16px; backdrop-filter:blur(14px); padding:clamp(28px,4vw,48px); text-align:left;
+  }
+  .love-note.show{ display:block; animation:fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(24px);} to{ opacity:1; transform:translateY(0);} }
+  .love-note p{ font-family:'Cormorant Garamond', serif; font-size:clamp(18px,2.2vw,22px); line-height:1.85; color:var(--cream); }
+  .typed-cursor{ display:inline-block; width:2px; background:var(--rose-gold); margin-left:2px; animation:blink 0.9s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+  .love-note .sign{ margin-top:26px; font-family:'Parisienne', cursive; font-size:28px; color:var(--rose-gold-bright); text-align:right; }
+
+  /* ---------- REASONS ---------- */
+  .reasons-title{ font-family:'Playfair Display', serif; font-size:clamp(30px,4.4vw,46px); margin-bottom:12px; }
+  .reasons-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--blush); opacity:0.85; font-size:18px; margin-bottom:52px; }
+  .cards-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:22px; max-width:1000px; width:100%; }
+  .flip-card{ perspective:1200px; height:210px; }
+  .flip-inner{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform 0.8s cubic-bezier(.4,.2,.2,1); }
+  .flip-card:hover .flip-inner, .flip-card.touched .flip-inner{ transform:rotateY(180deg); }
+  .flip-front, .flip-back{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:16px;
+    display:flex; align-items:center; justify-content:center; flex-direction:column; padding:18px;
+    border:1px solid rgba(217,160,102,0.3);
+  }
+  .flip-front{ background:rgba(247,236,221,0.05); backdrop-filter:blur(10px); transition:box-shadow .3s ease, border-color .3s ease; }
+  .flip-card:hover .flip-front{ box-shadow:0 0 26px rgba(217,160,102,0.25); border-color:rgba(217,160,102,0.6); }
+  .flip-front .num{ font-family:'Playfair Display', serif; font-size:36px; color:var(--rose-gold); opacity:0.7; }
+  .flip-front .icon{ font-size:30px; margin-top:6px; }
+  .flip-back{ background:linear-gradient(160deg, var(--wine), #331a2a); transform:rotateY(180deg); }
+  .flip-back p{ font-family:'Cormorant Garamond', serif; font-size:17px; line-height:1.5; color:var(--cream); }
+
+  /* ---------- LOVE METER ---------- */
+  .meter-title{ font-family:'Playfair Display', serif; font-size:clamp(28px,4vw,42px); margin-bottom:10px; }
+  .meter-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--blush); opacity:0.85; font-size:18px; margin-bottom:50px; }
+  .meter-box{ width:min(90vw, 560px); }
+  .meter-readout{
+    font-family:'Playfair Display', serif; font-size:clamp(26px,4vw,38px); color:var(--rose-gold-bright);
+    min-height:1.4em; margin-bottom:28px; transition:color .3s ease;
+  }
+  .meter-hearts{ font-size:22px; margin-bottom:26px; letter-spacing:2px; min-height:1.4em; }
+  input[type=range]{
+    -webkit-appearance:none; width:100%; height:6px; border-radius:4px;
+    background:linear-gradient(90deg, var(--wine), var(--rose-gold), var(--blush));
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:26px; height:26px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff, var(--rose-gold-bright));
+    box-shadow:0 0 14px rgba(217,160,102,0.7); cursor:pointer; border:2px solid var(--cream);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:26px; height:26px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff, var(--rose-gold-bright));
+    box-shadow:0 0 14px rgba(217,160,102,0.7); cursor:pointer; border:2px solid var(--cream);
+  }
+  .meter-labels{ display:flex; justify-content:space-between; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:14px; opacity:0.6; margin-top:8px; }
+
+  /* ---------- CONSTELLATION ---------- */
+  .const-title{ font-family:'Playfair Display', serif; font-size:clamp(28px,4vw,42px); margin-bottom:10px; }
+  .const-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--blush); opacity:0.85; font-size:18px; margin-bottom:36px; }
+  #constCanvas{ width:min(92vw,520px); height:min(92vw,420px); cursor:pointer; }
+  .const-caption{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:18px; color:var(--rose-gold-bright); opacity:0; transition:opacity .6s ease; margin-top:22px; min-height:1.4em; }
+  .const-caption.show{ opacity:1; }
+
+  /* ---------- SURPRISE ---------- */
+  .surprise-title{ font-family:'Playfair Display', serif; font-size:clamp(28px,4.4vw,44px); margin-bottom:16px; }
+  .surprise-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--blush); opacity:0.85; font-size:18px; margin-bottom:44px; max-width:520px; }
+  .surprise-btn{
+    font-family:'Playfair Display', serif; font-size:20px; letter-spacing:1px;
+    background:linear-gradient(120deg, var(--rose-gold), var(--rose-gold-bright));
+    color:var(--ink); border:none; padding:18px 42px; border-radius:50px;
+    cursor:pointer; box-shadow:0 12px 34px rgba(217,160,102,0.35); transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .surprise-btn:hover{ transform:translateY(-3px) scale(1.03); box-shadow:0 16px 44px rgba(217,160,102,0.5); }
+  .surprise-btn:active{ transform:translateY(0) scale(0.98); }
+
+  .surprise-overlay{
+    position:fixed; inset:0; z-index:95; display:flex; align-items:center; justify-content:center;
+    background:rgba(10,4,9,0.82); backdrop-filter:blur(6px);
+    opacity:0; pointer-events:none; transition:opacity 0.6s ease; padding:24px; text-align:center;
+  }
+  .surprise-overlay.show{ opacity:1; pointer-events:auto; }
+  .surprise-overlay-inner{ transform:scale(0.85); transition:transform 0.6s cubic-bezier(.2,.8,.2,1.3); }
+  .surprise-overlay.show .surprise-overlay-inner{ transform:scale(1); }
+  .surprise-overlay h3{
+    font-family:'Playfair Display', serif; font-size:clamp(30px,6vw,54px);
+    background:linear-gradient(120deg, var(--rose-gold-bright), var(--blush));
+    -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:16px;
+  }
+  .surprise-overlay p{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(18px,2.4vw,24px); max-width:520px; margin:0 auto 26px; color:var(--cream); }
+  .surprise-close{
+    background:transparent; border:1px solid rgba(247,236,221,0.4); color:var(--cream);
+    font-family:'Poppins', sans-serif; font-size:13px; letter-spacing:1px; padding:10px 24px;
+    border-radius:30px; cursor:pointer; transition:all .3s ease;
+  }
+  .surprise-close:hover{ background:rgba(247,236,221,0.1); }
+
+  /* ---------- CLOSING ---------- */
+  .closing-heart{ width:80px; height:80px; margin-bottom:26px; }
+  .closing-title{
+    font-family:'Playfair Display', serif; font-size:clamp(30px,5vw,50px);
+    background:linear-gradient(120deg, var(--rose-gold), var(--blush));
+    -webkit-background-clip:text; background-clip:text; color:transparent; max-width:780px;
+  }
+  .closing-sub{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(18px,2.2vw,22px); opacity:0.85; margin-top:18px; max-width:620px; }
+  .closing-sign{ margin-top:36px; font-family:'Parisienne', cursive; font-size:32px; color:var(--rose-gold-bright); }
+  .footer-note{ margin-top:60px; font-size:12px; letter-spacing:1.5px; color:rgba(247,236,221,0.35); }
+
+  .confetti-piece{ position:fixed; top:-30px; z-index:96; pointer-events:none; will-change:transform, opacity; }
+
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
 </head>
 <body>
 
-  <!-- ============================================= -->
-  <!-- LOADING SCREEN                                  -->
-  <!-- ============================================= -->
-  <div id="loading-screen" aria-hidden="true">
-    <div class="loader-heart">
-      <svg viewBox="0 0 32 29" class="loader-heart-svg">
-        <path d="M16 28.5C16 28.5 1.5 19.7 1.5 9.6C1.5 4.9 5.3 1 10.1 1C12.9 1 15.3 2.4 16 4.5C16.7 2.4 19.1 1 21.9 1C26.7 1 30.5 4.9 30.5 9.6C30.5 19.7 16 28.5 16 28.5Z"/>
-      </svg>
+<div id="preloader">
+  <div class="pre-heart">
+    <svg viewBox="0 0 32 29">
+      <defs>
+        <clipPath id="preClip">
+          <path d="M16 28.5C16 28.5 1 19.2 1 9.4C1 4.4 4.8 1 9.3 1C12.4 1 14.9 2.8 16 5.4C17.1 2.8 19.6 1 22.7 1C27.2 1 31 4.4 31 9.4C31 19.2 16 28.5 16 28.5Z"/>
+        </clipPath>
+      </defs>
+      <path class="outline" d="M16 28.5C16 28.5 1 19.2 1 9.4C1 4.4 4.8 1 9.3 1C12.4 1 14.9 2.8 16 5.4C17.1 2.8 19.6 1 22.7 1C27.2 1 31 4.4 31 9.4C31 19.2 16 28.5 16 28.5Z"/>
+      <g clip-path="url(#preClip)">
+        <rect class="fill pre-fill-mask" x="0" y="0" width="32" height="29"/>
+      </g>
+    </svg>
+  </div>
+  <div class="pre-label">tayyari ho rahi hai...</div>
+</div>
+
+<div class="aurora"><span></span><span></span><span></span><span></span></div>
+<div class="grain"></div>
+<canvas id="hearts-canvas"></canvas>
+<div class="progress-bar" id="progressBar"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="side-nav" id="sideNav">
+  <button data-target="hero" data-label="Shuru" class="active"></button>
+  <button data-target="gallery-section" data-label="Yaadein"></button>
+  <button data-target="timeline-section" data-label="Tareekhein"></button>
+  <button data-target="letter-section" data-label="Khat"></button>
+  <button data-target="reasons" data-label="Wajahen"></button>
+  <button data-target="game-section" data-label="Khel"></button>
+  <button data-target="scratch-section" data-label="Raaz"></button>
+  <button data-target="closing" data-label="Aakhir"></button>
+</nav>
+
+<button class="sound-toggle" id="soundToggle" aria-label="Toggle music">♪</button>
+<div class="eq-bars" id="eqBars"><span></span><span></span><span></span></div>
+<audio id="bgMusic" src="song1.mp3" loop preload="auto"></audio>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">1 August · International Girlfriend's Day</div>
+    <h1 class="hero-title" id="heroTitle"><span class="kinetic-word">Happy</span> <span class="kinetic-word">Girlfriend's</span> <span class="kinetic-word">Day</span><span class="hero-script kinetic-word">meri Chuuze</span></h1>
+    <p class="hero-sub">Duniya ki sab se pyari <span>ladki</span> ke liye — <span>Mahnoor</span> ❤</p>
+    <svg class="heart-mark" id="heroHeart" viewBox="0 0 32 29" fill="none">
+      <path d="M16 28.5C16 28.5 1 19.2 1 9.4C1 4.4 4.8 1 9.3 1C12.4 1 14.9 2.8 16 5.4C17.1 2.8 19.6 1 22.7 1C27.2 1 31 4.4 31 9.4C31 19.2 16 28.5 16 28.5Z" fill="url(#g1)"/>
+      <defs><linearGradient id="g1" x1="1" y1="1" x2="31" y2="28.5"><stop stop-color="#d9a066"/><stop offset="1" stop-color="#f3c9d4"/></linearGradient></defs>
+    </svg>
+  </div>
+  <div class="scroll-cue">↓ neeche kuch khaas hai ↓</div>
+</section>
+
+<!-- STATEMENT -->
+<section id="statement-section">
+  <p class="statement reveal">Har saal humaare bohot se din khaas hote hain, lekin aaj ka din sirf ek insaan ke naam hai —<br><span class="accent">meri Chuuze.</span></p>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery-section">
+  <div class="gallery-title reveal">Yeh chand lamhe</div>
+  <p class="gallery-sub reveal d1">jab tak asli tasveerein iss frame mein nahi aatin, dil se banaye kuch nishaan sahi</p>
+  <div class="memory-row reveal d2">
+    <div class="memory-card" style="--r:-4deg;">
+      <div class="memory-badge">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 4V16H4V5z"/><path d="M8 9h8M8 12h5"/></svg>
+      </div>
+      <div class="memory-line"></div>
+      <div class="memory-cap">Pehli baat</div>
     </div>
-    <p class="loader-text">gathering our memories&hellip;</p>
+    <div class="memory-card" style="--r:3deg;">
+      <div class="memory-badge">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 10.5h.01M15.5 10.5h.01"/><path d="M8 14.5c1 1.4 2.4 2 4 2s3-.6 4-2"/></svg>
+      </div>
+      <div class="memory-line"></div>
+      <div class="memory-cap">Jab tumne mujhe hasaya</div>
+    </div>
+    <div class="memory-card" style="--r:-2deg;">
+      <div class="memory-badge">
+        <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="9" rx="4"/><path d="M8 11v3M6.5 12.5h3"/><circle cx="15.5" cy="11.5" r="0.8" fill="currentColor"/><circle cx="17.5" cy="13.5" r="0.8" fill="currentColor"/></svg>
+      </div>
+      <div class="memory-line"></div>
+      <div class="memory-cap">Wo game wali larai</div>
+    </div>
+    <div class="memory-card" style="--r:4deg;">
+      <div class="memory-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 20.5C12 20.5 3.5 15 3.5 9.2c0-3 2.3-5.2 5.1-5.2 1.9 0 3.4 1 4.4 2.6 1-1.6 2.5-2.6 4.4-2.6 2.8 0 5.1 2.2 5.1 5.2 0 5.8-8.5 11.3-8.5 11.3z"/></svg>
+      </div>
+      <div class="memory-line"></div>
+      <div class="memory-cap">Sulah ka pal</div>
+    </div>
+    <div class="memory-card" style="--r:-5deg;">
+      <div class="memory-badge">
+        <svg viewBox="0 0 24 24"><path d="M8 12c0-2 1.5-3.5 3.2-3.5 1.4 0 2.3 1 2.8 2 .5-1 1.4-2 2.8-2C18.5 8.5 20 10 20 12s-1.5 3.5-3.2 3.5c-1.4 0-2.3-1-2.8-2-.5 1-1.4 2-2.8 2C9.5 15.5 8 14 8 12z"/></svg>
+      </div>
+      <div class="memory-line"></div>
+      <div class="memory-cap">Hum, hamesha</div>
+    </div>
+  </div>
+  <p class="gallery-note reveal d3">(Hamza: agar real photos add karni hon to .memory-badge ki jagah &lt;img&gt; laga sakte ho)</p>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline-section">
+  <div class="timeline-title reveal">Hamari Kahani, Tareekhon Mein</div>
+  <div class="divider reveal d1"><span class="line"></span><span class="mark">♥</span><span class="line"></span></div>
+  <p class="timeline-sub reveal d1">chand tareekhein jo hamesha yaad rahengi</p>
+  <div class="timeline">
+    <div class="t-item reveal">
+      <div class="t-dot"></div>
+      <div class="t-date">15 June</div>
+      <div class="t-text">Tumhara birthday — jab maine tumhare liye pehli baar poori raat jaag kar surprise site banayi thi.</div>
+    </div>
+    <div class="t-item reveal d1">
+      <div class="t-dot"></div>
+      <div class="t-date">17 June</div>
+      <div class="t-text">Wo din jab maine tumse propose kiya, aur tab se har din thora aur khaas ho gaya.</div>
+    </div>
+    <div class="t-item reveal d2">
+      <div class="t-dot"></div>
+      <div class="t-date">1 August · Aaj</div>
+      <div class="t-text">Girlfriend's Day — aur main phir se kuch naya bana raha hoon, sirf tumhare liye, meri Chuuze.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ENVELOPE -->
+<section id="letter-section">
+  <div class="env-title reveal">Ek chhota sa khat, meri jaan</div>
+  <div class="env-hint reveal d1">seal par tap karo, isay kholne ke liye</div>
+
+  <div class="envelope-wrap reveal d2">
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="env-ribbon"></div>
+      <div class="env-letter"><span class="env-letter-hint">tumhara khat...</span></div>
+      <div class="env-flap"></div>
+      <div class="env-seal">💌</div>
+    </div>
   </div>
 
-  <!-- ============================================= -->
-  <!-- AMBIENT LAYERS: particles + floating hearts     -->
-  <!-- ============================================= -->
-  <canvas id="particle-canvas" aria-hidden="true"></canvas>
-  <div id="floating-hearts" aria-hidden="true"></div>
+  <div class="love-note" id="loveNote">
+    <p id="typedText"></p>
+    <div class="sign">hamesha tumhara, Hamza</div>
+  </div>
+</section>
 
-  <!-- ============================================= -->
-  <!-- NAVIGATION                                      -->
-  <!-- ============================================= -->
-  <header class="nav" id="nav">
-    <a href="#hero" class="nav-logo">H&nbsp;&amp;&nbsp;M</a>
+<!-- REASONS -->
+<section id="reasons">
+  <div class="reasons-title reveal">Chand wajahen, itni si mohabbat ki</div>
+  <div class="reasons-sub reveal d1">(card ko chuho, palat jayega)</div>
+  <div class="cards-grid reveal d2" id="cardsGrid">
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="num">01</div><div class="icon">😊</div></div>
+      <div class="flip-back"><p>Tumhari muskurahat dekh kar mera pura din ban jata hai, chahe wo din kitna bhi mushkil kyun na ho.</p></div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="num">02</div><div class="icon">🤍</div></div>
+      <div class="flip-back"><p>Tum jitna care karti ho utna to shayad main khud apna bhi nahi karta. Yeh cheez mujhe bohot pyari lagti hai.</p></div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="num">03</div><div class="icon">🎮</div></div>
+      <div class="flip-back"><p>Chahe hum kisi baat pe larr len (game wali fight bhi shamil hai), sulah tumhari wajah se hi hoti hai. Shukriya.</p></div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="num">04</div><div class="icon">✨</div></div>
+      <div class="flip-back"><p>Tumhari choti choti baatein, tumhara gussa, tumhara pyar — sab mila kar tum meri favorite insaan ho.</p></div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="num">05</div><div class="icon">🌙</div></div>
+      <div class="flip-back"><p>Raat ko so'ne se pehle tumhare messages padhna, mera sabse pur-sukoon lamha hota hai.</p></div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="num">06</div><div class="icon">💍</div></div>
+      <div class="flip-back"><p>Kyunki tumhare sath har chhota lamha bhi ek yaad ban jata hai jo main hamesha sambhal ke rakhta hun.</p></div>
+    </div></div>
+  </div>
+  <div class="compliment-box reveal d3">
+    <button class="compliment-btn" id="complimentBtn">❤ ek tareef sun lo</button>
+    <div class="compliment-text" id="complimentText"></div>
+  </div>
+</section>
+<section id="meter-section">
+  <div class="meter-title reveal">Zara batao... kitna pyar hai?</div>
+  <div class="meter-sub reveal d1">slider ko ghaseeto aur dekho</div>
+  <div class="meter-box reveal d2">
+    <div class="meter-readout" id="meterReadout">Bohot sara ❤</div>
+    <div class="meter-hearts" id="meterHearts">🤍🤍🤍🤍🤍</div>
+    <input type="range" min="0" max="100" value="40" id="loveSlider">
+    <div class="meter-labels"><span>thoda</span><span>infinity ∞</span></div>
+  </div>
+</section>
 
-    <nav class="nav-links" id="nav-links">
-      <a href="#meeting" class="nav-link">Our Meeting</a>
-      <a href="#gallery" class="nav-link">Gallery</a>
-      <a href="#story" class="nav-link">Our Story</a>
-      <a href="#countdown" class="nav-link">Together</a>
-      <a href="#notes" class="nav-link">Love Notes</a>
-      <a href="#reasons" class="nav-link">Reasons</a>
-    </nav>
+<!-- MEMORY GAME -->
+<section id="game-section">
+  <div class="game-title reveal">Ek chhota sa khel</div>
+  <p class="game-sub reveal d1">jode milao — sab hearts match karo</p>
+  <div class="game-status reveal d1" id="gameStatus">Chalo shuru karein</div>
+  <div class="game-grid reveal d2" id="gameGrid"></div>
+  <button class="game-reset reveal d3" id="gameReset">Dobara khelo</button>
+</section>
 
-    <div class="nav-actions">
-      <!-- Music toggle -->
-      <button id="music-toggle" class="icon-btn" aria-label="Play background music" aria-pressed="false">
-        <svg class="icon-music-note" viewBox="0 0 24 24" fill="none"><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
-        <span class="eq-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-      </button>
+<!-- SCRATCH CARD -->
+<section id="scratch-section">
+  <div class="scratch-title reveal">Ek chupa hua raaz</div>
+  <p class="scratch-sub reveal d1">card ko ungli/mouse se scratch karo</p>
+  <div class="scratch-wrap reveal d2">
+    <canvas id="scratchBase" width="480" height="240"></canvas>
+    <canvas id="scratchCanvas" width="480" height="240"></canvas>
+  </div>
+  <p class="scratch-caption reveal d3">poora scratch karo, message pura khul jayega</p>
+</section>
 
-      <!-- Dark / light mode -->
-      <button id="theme-toggle" class="icon-btn" aria-label="Toggle light and dark mode">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-      </button>
+<!-- CONSTELLATION -->
+<section id="const-section">
+  <div class="const-title reveal">Hamari kahani, sitaron mein</div>
+  <div class="const-sub reveal d1">canvas par click karo</div>
+  <canvas id="constCanvas" class="reveal d2" width="520" height="420"></canvas>
+  <div class="const-caption" id="constCaption">Written in the stars: You + Me ✨</div>
+</section>
 
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
+<!-- SURPRISE -->
+<section id="surprise-section">
+  <div class="surprise-title reveal">Ek aakhri surprise...</div>
+  <p class="surprise-sub reveal d1">is button ko dabao aur dekho kya hota hai 👀</p>
+  <button class="surprise-btn reveal d2" id="surpriseBtn">🎁 Surprise Kholo</button>
+</section>
 
-  <!-- Hidden audio element for background music -->
-  <!-- REPLACE with your own song file if you'd like -->
-  <audio id="bg-music" loop preload="none">
-    <source src="song/Raabta.mp3" type="audio/mpeg" />
-  </audio>
+<!-- CLOSING -->
+<section id="closing">
+  <svg class="closing-heart reveal" viewBox="0 0 32 29" fill="none">
+    <path d="M16 28.5C16 28.5 1 19.2 1 9.4C1 4.4 4.8 1 9.3 1C12.4 1 14.9 2.8 16 5.4C17.1 2.8 19.6 1 22.7 1C27.2 1 31 4.4 31 9.4C31 19.2 16 28.5 16 28.5Z" fill="url(#g2)"/>
+    <defs><linearGradient id="g2" x1="1" y1="1" x2="31" y2="28.5"><stop stop-color="#d9a066"/><stop offset="1" stop-color="#f3c9d4"/></linearGradient></defs>
+  </svg>
+  <div class="closing-title reveal d1">Happy Girlfriend's Day, meri Chuuze</div>
+  <p class="closing-sub reveal d2">Tum sirf meri girlfriend nahi ho, meri sabse pyari dost, meri sukoon aur meri sabse khoobsurat aadat ho. I love you, aaj bhi, hamesha ki tarah.</p>
+  <div class="closing-sign reveal d3">Hamza 🤍</div>
+  <div class="footer-note">MADE WITH LOVE · 01.08</div>
+</section>
 
-  <main>
+<div class="surprise-overlay" id="surpriseOverlay">
+  <div class="surprise-overlay-inner">
+    <h3>I love you, Chuuze 🤍</h3>
+    <p>Aaj, kal, aur aane wale har din — tum meri sabse khoobsurat kahani ho.</p>
+    <button class="surprise-close" id="surpriseClose">BAND KARO</button>
+  </div>
+</div>
 
-    <!-- ============================================= -->
-    <!-- 1. HERO SECTION                                 -->
-    <!-- ============================================= -->
-    <section id="hero" class="hero">
-      <div class="hero-glow"></div>
-      <div class="hero-content">
-        <p class="hero-eyebrow reveal-up">a love story, still being written</p>
-        <h1 class="hero-title">
-          <span class="typing-text" id="typing-text"></span><span class="typing-cursor">|</span>
-        </h1>
-        <p class="hero-sub reveal-up" style="--delay:0.5s">Every memory with you is my favorite story to tell, again and again.</p>
-        <a href="#meeting" class="btn btn-primary reveal-up" id="start-journey" style="--delay:0.7s">
-          <span>Start Our Journey</span>
-          <svg viewBox="0 0 24 24" fill="none" class="btn-arrow"><path d="M12 4v16M12 20l-6-6M12 20l6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-      <div class="scroll-hint" aria-hidden="true"><span></span></div>
-    </section>
+<script>
+/* ---------------- Preloader + kinetic hero reveal ---------------- */
+const preloader = document.getElementById('preloader');
+const minDelay = new Promise(res=> setTimeout(res, 1600));
+Promise.all([minDelay, (document.fonts ? document.fonts.ready : Promise.resolve())]).then(()=>{
+  preloader.classList.add('hide');
+  document.querySelectorAll('.kinetic-word').forEach((w,i)=>{
+    setTimeout(()=> w.classList.add('show'), 200 + i*140);
+  });
+});
 
-    <!-- ============================================= -->
-    <!-- 2. OUR FIRST MEETING                            -->
-    <!-- ============================================= -->
-    <section id="meeting" class="section">
-      <div class="section-head reveal-up">
-        <p class="eyebrow">Chapter One</p>
-        <h2 class="section-title">Our First Meeting</h2>
-        <p class="section-desc">The moment the story quietly began, without either of us noticing.</p>
-      </div>
+/* ---------------- Side nav dots ---------------- */
+const sideNavBtns = document.querySelectorAll('.side-nav button');
+sideNavBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const target = document.getElementById(btn.dataset.target);
+    if(target) target.scrollIntoView({ behavior:'smooth' });
+  });
+});
+const navSections = Array.from(sideNavBtns).map(b=> document.getElementById(b.dataset.target)).filter(Boolean);
+const navObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const id = en.target.id;
+      sideNavBtns.forEach(b=> b.classList.toggle('active', b.dataset.target===id));
+    }
+  });
+}, { threshold:0.5 });
+navSections.forEach(s=> navObserver.observe(s));
 
-      <div class="meet-grid">
-        <article class="meet-card glass reveal-up" style="--delay:0.05s">
-          <div class="meet-icon">🏙️</div>
-          <h3>The Place</h3>
-          <p>Ocean Mall, somewhere between 5 and 6 in the evening — an ordinary place that turned into somewhere I'd never forget, the moment you were standing there.</p>
-        </article>
-        <article class="meet-card glass reveal-up" style="--delay:0.15s">
-          <div class="meet-icon">✨</div>
-          <h3>The Moment</h3>
-          <p>A happiness neither of us could put into words — the kind you don't explain, you just feel it settle quietly inside you.</p>
-        </article>
-        <article class="meet-card glass reveal-up" style="--delay:0.25s">
-          <div class="meet-icon">💌</div>
-          <h3>The Feeling</h3>
-          <p>And with every step closer, the feeling only grew stronger — like my heart already knew what my mind was still catching up to.</p>
-        </article>
-      </div>
-    </section>
+/* ---------------- Custom cursor ---------------- */
+const isFinePointer = window.matchMedia('(pointer:fine)').matches;
+const cursorDot = document.getElementById('cursorDot');
+const cursorRing = document.getElementById('cursorRing');
+if(isFinePointer){
+  document.body.classList.add('cursor-active');
+  let mx=innerWidth/2, my=innerHeight/2, rx=mx, ry=my;
+  let lastTrail = 0;
+  const trailEmojis = ['❤','💛','✨'];
+  window.addEventListener('mousemove', e=>{
+    mx=e.clientX; my=e.clientY;
+    cursorDot.style.left=mx+'px'; cursorDot.style.top=my+'px';
+    const now = performance.now();
+    if(now - lastTrail > 90){
+      lastTrail = now;
+      const h = document.createElement('div');
+      h.className = 'cursor-heart';
+      h.textContent = trailEmojis[Math.floor(Math.random()*trailEmojis.length)];
+      h.style.left = mx+'px'; h.style.top = my+'px';
+      document.body.appendChild(h);
+      const anim = h.animate([
+        { transform:'translate(-50%,-50%) scale(1)', opacity:0.8 },
+        { transform:`translate(-50%, -${20+Math.random()*20}px) scale(0.4)`, opacity:0 }
+      ], { duration:700, easing:'ease-out' });
+      anim.onfinish = ()=> h.remove();
+    }
+  });
+  function ringLoop(){
+    rx += (mx-rx)*0.16; ry += (my-ry)*0.16;
+    cursorRing.style.left=rx+'px'; cursorRing.style.top=ry+'px';
+    requestAnimationFrame(ringLoop);
+  }
+  ringLoop();
+  document.querySelectorAll('a,button,.envelope,.flip-card,#loveSlider,#constCanvas').forEach(el=>{
+    el.addEventListener('mouseenter', ()=> cursorRing.style.transform='translate(-50%,-50%) scale(1.6)');
+    el.addEventListener('mouseleave', ()=> cursorRing.style.transform='translate(-50%,-50%) scale(1)');
+  });
+} else {
+  cursorDot.style.display='none'; cursorRing.style.display='none';
+}
 
-    <!-- ============================================= -->
-    <!-- 3. PHOTO GALLERY                                -->
-    <!-- ============================================= -->
-    <section id="gallery" class="section">
-      <div class="section-head reveal-up">
-        <p class="eyebrow">Frozen Moments</p>
-        <h2 class="section-title">Photo Gallery</h2>
-        <p class="section-desc">A collection of moments too beautiful to forget.</p>
-      </div>
+/* ---------------- Scroll progress ---------------- */
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', ()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  progressBar.style.width = pct + '%';
+});
 
-      <div class="gallery-grid">
-        <!-- Photo 1 -->
-        <figure class="gallery-item reveal-up" style="--delay:0.05s" data-caption="Holding hands, our fingers laced together">
-          <img src="images/photo1.png" alt="Our memory 1" loading="lazy" />
-          <figcaption><span>Holding hands, our fingers laced together</span></figcaption>
-        </figure>
-        <!-- Photo 2 -->
-        <figure class="gallery-item reveal-up" style="--delay:0.1s" data-caption="A moment I never want to forget">
-          <img src="images/photo2.png" alt="Our memory 2" loading="lazy" />
-          <figcaption><span>A moment I never want to forget</span></figcaption>
-        </figure>
-        <!-- Photo 3 -->
-        <figure class="gallery-item reveal-up" style="--delay:0.15s" data-caption="A moment I never want to forget">
-          <img src="images/photo3.png" alt="Our memory 3" loading="lazy" />
-          <figcaption><span>A moment I never want to forget</span></figcaption>
-        </figure>
-        <!-- Photo 4 -->
-        <figure class="gallery-item reveal-up" style="--delay:0.2s" data-caption="One of my favorite days with you">
-          <img src="images/photo4.png" alt="Our memory 4" loading="lazy" />
-          <figcaption><span>One of my favorite days with you</span></figcaption>
-        </figure>
-        <!-- Photo 5 -->
-        <figure class="gallery-item reveal-up" style="--delay:0.25s" data-caption="One of my favorite days with you">
-          <img src="images/photo5.png" alt="Our memory 5" loading="lazy" />
-          <figcaption><span>One of my favorite days with you</span></figcaption>
-        </figure>
-        <!-- Photo 6 -->
-        <figure class="gallery-item reveal-up" style="--delay:0.3s" data-caption="Just us, being us">
-          <img src="images/photo6.png" alt="Our memory 6" loading="lazy" />
-          <figcaption><span>Just us, being us</span></figcaption>
-        </figure>
-        <!-- Photo 7 -->
-        <figure class="gallery-item reveal-up" style="--delay:0.35s" data-caption="Just us, being us">
-          <img src="images/photo7.png" alt="Our memory 7" loading="lazy" />
-          <figcaption><span>Just us, being us</span></figcaption>
-        </figure>
-        <!-- Photo 8 -->
-        <figure class="gallery-item reveal-up" style="--delay:0.4s" data-caption="A memory I'll always keep close">
-          <img src="images/photo8.png" alt="Our memory 8" loading="lazy" />
-          <figcaption><span>A memory I'll always keep close</span></figcaption>
-        </figure>
-      </div>
-    </section>
+/* ---------------- Scroll reveal ---------------- */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in-view'); io.unobserve(en.target); } });
+}, { threshold:0.2 });
+revealEls.forEach(el=> io.observe(el));
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" aria-hidden="true">
-      <button class="lightbox-close" id="lightbox-close" aria-label="Close image">&times;</button>
-      <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous image">&#10094;</button>
-      <img src="" alt="" id="lightbox-img" />
-      <p class="lightbox-caption" id="lightbox-caption"></p>
-      <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next image">&#10095;</button>
-    </div>
+/* ---------------- Floating hearts canvas ---------------- */
+const canvas = document.getElementById('hearts-canvas');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+const colors = ['#d9a066','#f3c9d4','#f7ecdd','#e59aa8'];
+let hearts = [];
+function makeHeart(){
+  return { x: Math.random()*canvas.width, y: canvas.height + 30 + Math.random()*200,
+    size: 8 + Math.random()*14, speed: 0.4 + Math.random()*0.9, drift:(Math.random()-0.5)*0.6,
+    color: colors[Math.floor(Math.random()*colors.length)], opacity: 0.22 + Math.random()*0.4, sway: Math.random()*Math.PI*2 };
+}
+for(let i=0;i<26;i++){ hearts.push({...makeHeart(), y: Math.random()*canvas.height}); }
+function drawHeart(x,y,size,color,opacity){
+  ctx.save(); ctx.globalAlpha=opacity; ctx.translate(x,y); ctx.scale(size/16, size/16);
+  ctx.beginPath(); ctx.moveTo(0,4);
+  ctx.bezierCurveTo(0,-2,-8,-2,-8,4); ctx.bezierCurveTo(-8,10,0,14,0,18);
+  ctx.bezierCurveTo(0,14,8,10,8,4); ctx.bezierCurveTo(8,-2,0,-2,0,4);
+  ctx.fillStyle=color; ctx.fill(); ctx.restore();
+}
+function animateHearts(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  hearts.forEach(h=>{
+    h.y -= h.speed; h.sway += 0.02; h.x += Math.sin(h.sway)*0.4 + h.drift*0.1;
+    if(h.y < -30){ Object.assign(h, makeHeart()); h.y = canvas.height + 20; }
+    drawHeart(h.x, h.y, h.size, h.color, h.opacity);
+  });
+  requestAnimationFrame(animateHearts);
+}
+animateHearts();
 
-    <!-- ============================================= -->
-    <!-- 4. MEMORY VIDEOS                                -->
-    <!-- ============================================= -->
-    <section id="videos" class="section">
-      <div class="section-head reveal-up">
-        <p class="eyebrow">Moments in Motion</p>
-        <h2 class="section-title">Memory Videos</h2>
-        <p class="section-desc">Some memories move too beautifully to stay still.</p>
-      </div>
+/* ---------------- Hero parallax ---------------- */
+const heroHeart = document.getElementById('heroHeart');
+window.addEventListener('mousemove', (e)=>{
+  const px = (e.clientX/innerWidth - 0.5) * 14;
+  const py = (e.clientY/innerHeight - 0.5) * 14;
+  heroHeart.style.transform = `translate(${px}px, ${py}px)`;
+});
 
-      <div class="video-grid">
-        <!-- Video 1 -->
-        <div class="video-card reveal-up" style="--delay:0.05s">
-          <video class="memory-video" autoplay muted loop playsinline preload="metadata">
-            <source src="videos/vid1.mp4" type="video/mp4" />
-          </video>
-          <button class="video-play-btn" aria-label="Play video">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
-          </button>
-          <div class="video-caption">The little moment I keep replaying</div>
-        </div>
+/* ---------------- Background music (song1.mp3) ---------------- */
+let playing=false;
+const bgMusic = document.getElementById('bgMusic');
+bgMusic.volume = 0.7;
+const eqBars = document.getElementById('eqBars');
+document.getElementById('soundToggle').addEventListener('click', function(){
+  playing = !playing;
+  if(playing){
+    bgMusic.play().catch(()=>{ playing=false; this.classList.remove('playing'); this.textContent='♪'; eqBars.classList.remove('active'); });
+  } else {
+    bgMusic.pause();
+  }
+  this.classList.toggle('playing', playing);
+  this.textContent = playing ? '♫' : '♪';
+  eqBars.classList.toggle('active', playing);
+});
+function swellMusic(){
+  if(!playing) return;
+  const original = 0.7;
+  bgMusic.volume = 1;
+  setTimeout(()=>{ bgMusic.volume = original; }, 2400);
+}
 
-        <!-- Video 2 -->
-        <div class="video-card reveal-up" style="--delay:0.1s">
-          <video class="memory-video" autoplay muted loop playsinline preload="metadata">
-            <source src="videos/vid2.mp4" type="video/mp4" />
-          </video>
-          <button class="video-play-btn" aria-label="Play video">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
-          </button>
-          <div class="video-caption">Not shy at all when it's you 😄</div>
-        </div>
 
-        <!-- Video 3 -->
-        <div class="video-card reveal-up" style="--delay:0.15s">
-          <video class="memory-video" autoplay muted loop playsinline preload="metadata">
-            <source src="videos/vid3.mp4" type="video/mp4" />
-          </video>
-          <button class="video-play-btn" aria-label="Play video">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
-          </button>
-          <div class="video-caption">This smile is my whole favorite thing</div>
-        </div>
+/* ---------------- Envelope open + typing letter ---------------- */
+const envelope = document.getElementById('envelope');
+const loveNote = document.getElementById('loveNote');
+const typedText = document.getElementById('typedText');
+const letterContent = "Meri sabse pyari Chuuze,\n\nAaj Girlfriend's Day hai, aur main bas itna kehna chahta hun ki tum mujhe mili, yeh meri zindagi ki sabse achi baat hai. Tumhari hasi, tumhara ghussa, tumhara pyar — sab kuch mujhe tumse aur zyada mohabbat karna sikhata hai. Chahe kuch bhi ho jaye, main hamesha tumhare sath rahunga.\n\nThank you for being mine.";
+let typed = false;
+envelope.addEventListener('click', ()=>{
+  envelope.classList.add('open');
+  setTimeout(()=>{
+    loveNote.classList.add('show');
+    if(!typed){ typed = true; typeLetter(letterContent, typedText); }
+  }, 700);
+});
+function typeLetter(text, el){
+  el.innerHTML=''; const cursor=document.createElement('span'); cursor.className='typed-cursor'; cursor.innerHTML='&nbsp;';
+  let i=0; const speed=28;
+  function step(){
+    if(i<=text.length){ el.innerHTML = text.slice(0,i).replace(/\n/g,'<br><br>'); el.appendChild(cursor); i++; setTimeout(step,speed); }
+    else{ cursor.remove(); }
+  }
+  step();
+}
 
-        <!-- Video 4 -->
-        <div class="video-card reveal-up" style="--delay:0.2s">
-          <video class="memory-video" autoplay muted loop playsinline preload="metadata">
-            <source src="videos/vid4.mp4" type="video/mp4" />
-          </video>
-          <button class="video-play-btn" aria-label="Play video">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
-          </button>
-          <div class="video-caption">Just us, caught on camera</div>
-        </div>
-      </div>
-    </section>
+/* ---------------- Flip card touch ---------------- */
+document.querySelectorAll('.flip-card').forEach(card=>{
+  card.addEventListener('click', ()=> card.classList.toggle('touched'));
+});
 
-    <!-- ============================================= -->
-    <!-- 5. LOVE STORY TIMELINE                          -->
-    <!-- ============================================= -->
-    <section id="story" class="section">
-      <div class="section-head reveal-up">
-        <p class="eyebrow">Chapter Two</p>
-        <h2 class="section-title">Our Love Story</h2>
-        <p class="section-desc">Every date has its own little story worth remembering.</p>
-      </div>
+/* ---------------- Love meter ---------------- */
+const slider = document.getElementById('loveSlider');
+const readout = document.getElementById('meterReadout');
+const meterHearts = document.getElementById('meterHearts');
+const stages = [
+  {max:15, text:"Thoda thoda 🙂", hearts:1},
+  {max:35, text:"Kaafi sara 😊", hearts:2},
+  {max:55, text:"Bohot sara ❤", hearts:3},
+  {max:75, text:"Bahot zyada 💕", hearts:4},
+  {max:94, text:"Beshumaar 💖", hearts:5},
+  {max:101, text:"Infinity, kabhi khatam nahi hoga ✨", hearts:5}
+];
+function updateMeter(v){
+  const stage = stages.find(s=> v <= s.max);
+  readout.textContent = stage.text;
+  meterHearts.textContent = '❤'.repeat(stage.hearts) + '🤍'.repeat(5-stage.hearts);
+  const hue = 320 - (v/100)*40;
+  readout.style.color = v>94 ? 'var(--rose-gold-bright)' : 'var(--blush)';
+}
+slider.addEventListener('input', e=> updateMeter(+e.target.value));
+updateMeter(+slider.value);
 
-      <div class="timeline">
-        <div class="timeline-line" aria-hidden="true"></div>
+/* ---------------- Constellation heart ---------------- */
+const cCanvas = document.getElementById('constCanvas');
+const cCtx = cCanvas.getContext('2d');
+function fitCanvas(){
+  const rect = cCanvas.getBoundingClientRect();
+  cCanvas.width = rect.width * devicePixelRatio;
+  cCanvas.height = rect.height * devicePixelRatio;
+  cCtx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+let heartPoints = [];
+function buildHeartPoints(){
+  const rect = cCanvas.getBoundingClientRect();
+  const cx = rect.width/2, cy = rect.height/2 + 10;
+  const scale = Math.min(rect.width, rect.height) / 34;
+  heartPoints = [];
+  const n = 40;
+  for(let i=0;i<n;i++){
+    const t = (i/n) * Math.PI * 2;
+    const x = 16*Math.pow(Math.sin(t),3);
+    const y = -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t));
+    heartPoints.push({ x: cx + x*scale, y: cy + y*scale, tw: Math.random()*Math.PI*2 });
+  }
+}
+let constProgress = 0, constAnimating = false, constDone = false;
+function drawConstellation(progress){
+  const rect = cCanvas.getBoundingClientRect();
+  cCtx.clearRect(0,0,rect.width,rect.height);
+  const visibleCount = Math.floor(heartPoints.length * progress);
+  cCtx.strokeStyle = 'rgba(217,160,102,0.55)';
+  cCtx.lineWidth = 1.2;
+  cCtx.beginPath();
+  for(let i=0;i<visibleCount;i++){
+    const p = heartPoints[i];
+    if(i===0) cCtx.moveTo(p.x,p.y); else cCtx.lineTo(p.x,p.y);
+  }
+  cCtx.stroke();
+  for(let i=0;i<visibleCount;i++){
+    const p = heartPoints[i];
+    const tw = 0.6 + 0.4*Math.sin(Date.now()/500 + p.tw);
+    cCtx.beginPath();
+    cCtx.arc(p.x,p.y, 2.4, 0, Math.PI*2);
+    cCtx.fillStyle = `rgba(247,236,221,${tw})`;
+    cCtx.fill();
+  }
+}
+function animateConstellation(){
+  if(constProgress < 1){
+    constProgress += 0.012;
+    drawConstellation(Math.min(constProgress,1));
+    requestAnimationFrame(animateConstellation);
+  } else {
+    constDone = true;
+    (function twinkleLoop(){ drawConstellation(1); if(!cCanvas._stop) requestAnimationFrame(twinkleLoop); })();
+  }
+}
+fitCanvas(); buildHeartPoints();
+window.addEventListener('resize', ()=>{ fitCanvas(); buildHeartPoints(); });
+const constObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting && !constAnimating){ constAnimating = true; animateConstellation(); constObserver.unobserve(en.target); }
+  });
+}, { threshold:0.4 });
+constObserver.observe(cCanvas);
 
-        <div class="timeline-item reveal-up">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content glass">
-            <span class="timeline-date">First Hello</span>
-            <h3>Where it all began</h3>
-            <p>A simple conversation that didn't feel simple at all. Replace with your own memory.</p>
-          </div>
-        </div>
+const constCaption = document.getElementById('constCaption');
+cCanvas.addEventListener('click', (e)=>{
+  constCaption.classList.add('show');
+  const rect = cCanvas.getBoundingClientRect();
+  spawnBurst(rect.left + rect.width/2, rect.top + rect.height/2, 18);
+});
 
-        <div class="timeline-item reveal-up">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content glass">
-            <span class="timeline-date">First Date</span>
-            <h3>Butterflies and quiet nerves</h3>
-            <p>We talked for hours and it still felt like minutes. Replace with your own memory.</p>
-          </div>
-        </div>
+/* ---------------- Confetti / burst hearts ---------------- */
+const confettiEmojis = ['❤','💛','🤍','💕','✨'];
+function spawnBurst(x,y,count){
+  for(let i=0;i<count;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.textContent = confettiEmojis[Math.floor(Math.random()*confettiEmojis.length)];
+    el.style.left = x+'px'; el.style.top = y+'px';
+    el.style.fontSize = (14 + Math.random()*14)+'px';
+    document.body.appendChild(el);
+    const angle = Math.random()*Math.PI*2;
+    const dist = 60 + Math.random()*140;
+    const dx = Math.cos(angle)*dist, dy = Math.sin(angle)*dist - 40;
+    const rot = (Math.random()-0.5)*720;
+    const anim = el.animate([
+      { transform:'translate(0,0) rotate(0deg)', opacity:1 },
+      { transform:`translate(${dx}px, ${dy+220}px) rotate(${rot}deg)`, opacity:0 }
+    ], { duration: 1600 + Math.random()*700, easing:'cubic-bezier(.2,.6,.3,1)' });
+    anim.onfinish = ()=> el.remove();
+  }
+}
+function spawnRainConfetti(){
+  const w = innerWidth;
+  for(let i=0;i<40;i++){
+    setTimeout(()=>{
+      const el = document.createElement('div');
+      el.className='confetti-piece';
+      el.textContent = confettiEmojis[Math.floor(Math.random()*confettiEmojis.length)];
+      el.style.left = (Math.random()*w)+'px'; el.style.top='-30px';
+      el.style.fontSize = (14+Math.random()*16)+'px';
+      document.body.appendChild(el);
+      const rot = (Math.random()-0.5)*720;
+      const drift = (Math.random()-0.5)*160;
+      const anim = el.animate([
+        { transform:'translate(0,0) rotate(0deg)', opacity:1 },
+        { transform:`translate(${drift}px, ${innerHeight+60}px) rotate(${rot}deg)`, opacity:0.9 }
+      ], { duration: 2600 + Math.random()*1400, easing:'ease-in' });
+      anim.onfinish = ()=> el.remove();
+    }, i*35);
+  }
+}
 
-        <div class="timeline-item reveal-up">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content glass">
-            <span class="timeline-date">First "I Love You"</span>
-            <h3>The words we finally said</h3>
-            <p>Three words, said quietly, that changed everything after. Replace with your own memory.</p>
-          </div>
-        </div>
+/* ---------------- Compliment generator ---------------- */
+const compliments = [
+  "Tumhari hasi is duniya ki sabse pyari aawaz hai.",
+  "Jitna sochta hun utna hi tumse pyar karta hun.",
+  "Tumhare hote hue mujhe kuch aur nahi chahiye.",
+  "Tum meri sabse acchi decision ho.",
+  "Har mushkil din tumhare ek message se aasan ho jata hai.",
+  "Tumhara hona hi meri sabse badi khushqismati hai.",
+  "Tum jaisi koi nahi, meri Chuuze.",
+  "Tumhari fikar karna mujhe sukoon deta hai."
+];
+let lastCompliment = -1;
+const complimentBtn = document.getElementById('complimentBtn');
+const complimentText = document.getElementById('complimentText');
+complimentBtn.addEventListener('click', ()=>{
+  let idx;
+  do{ idx = Math.floor(Math.random()*compliments.length); } while(idx===lastCompliment && compliments.length>1);
+  lastCompliment = idx;
+  complimentText.classList.remove('show');
+  setTimeout(()=>{
+    complimentText.textContent = compliments[idx];
+    complimentText.classList.add('show');
+  }, 200);
+});
 
-        <div class="timeline-item reveal-up">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content glass">
-            <span class="timeline-date">Today</span>
-            <h3>Still choosing you</h3>
-            <p>Every single day, again and again, I'd choose you. Replace with your own memory.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+/* ---------------- Memory matching game ---------------- */
+const gameEmojis = ['❤','💛','🤍','💕','✨','💍'];
+let gameValues = [...gameEmojis, ...gameEmojis];
+const gameGrid = document.getElementById('gameGrid');
+const gameStatus = document.getElementById('gameStatus');
+let flippedCards = [], lockBoard = false, matchedCount = 0, moves = 0;
 
-    <!-- ============================================= -->
-    <!-- 6. COUNTDOWN / TIME TOGETHER                    -->
-    <!-- ============================================= -->
-    <section id="countdown" class="section countdown-section">
-      <div class="section-head reveal-up">
-        <p class="eyebrow">Time Well Spent</p>
-        <h2 class="section-title">Together Since</h2>
-        <!-- Change the date below (YYYY-MM-DDTHH:MM:SS) to the day you got together -->
-        <p class="section-desc" id="together-since-label">Counting every second since May 11, 2025</p>
-      </div>
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  return arr;
+}
 
-      <div class="countdown-grid glass" id="countdown-grid" data-start="2025-05-11T00:00:00">
-        <div class="countdown-unit">
-          <span class="countdown-number" id="cd-years">00</span>
-          <span class="countdown-label">Years</span>
-        </div>
-        <div class="countdown-unit">
-          <span class="countdown-number" id="cd-months">00</span>
-          <span class="countdown-label">Months</span>
-        </div>
-        <div class="countdown-unit">
-          <span class="countdown-number" id="cd-days">00</span>
-          <span class="countdown-label">Days</span>
-        </div>
-        <div class="countdown-unit">
-          <span class="countdown-number" id="cd-hours">00</span>
-          <span class="countdown-label">Hours</span>
-        </div>
-        <div class="countdown-unit">
-          <span class="countdown-number" id="cd-minutes">00</span>
-          <span class="countdown-label">Minutes</span>
-        </div>
-        <div class="countdown-unit">
-          <span class="countdown-number" id="cd-seconds">00</span>
-          <span class="countdown-label">Seconds</span>
-        </div>
-      </div>
-    </section>
+function buildGame(){
+  gameGrid.innerHTML = '';
+  flippedCards = []; lockBoard = false; matchedCount = 0; moves = 0;
+  gameStatus.textContent = 'Chalo shuru karein';
+  const values = shuffle([...gameValues]);
+  values.forEach(val=>{
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.dataset.value = val;
+    card.innerHTML = `
+      <div class="game-card-inner">
+        <div class="game-face game-front">?</div>
+        <div class="game-face game-back">${val}</div>
+      </div>`;
+    card.addEventListener('click', ()=> handleCardClick(card));
+    gameGrid.appendChild(card);
+  });
+}
 
-    <!-- ============================================= -->
-    <!-- 7. LOVE NOTES                                   -->
-    <!-- ============================================= -->
-    <section id="notes" class="section">
-      <div class="section-head reveal-up">
-        <p class="eyebrow">Little Words</p>
-        <h2 class="section-title">Love Notes</h2>
-        <p class="section-desc">A few things my heart keeps trying to tell you.</p>
-      </div>
+function handleCardClick(card){
+  if(lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  card.classList.add('flipped');
+  flippedCards.push(card);
+  if(flippedCards.length === 2){
+    moves++;
+    lockBoard = true;
+    const [a,b] = flippedCards;
+    if(a.dataset.value === b.dataset.value){
+      a.classList.add('matched'); b.classList.add('matched');
+      matchedCount++;
+      flippedCards = []; lockBoard = false;
+      gameStatus.textContent = `${moves} chaalon mein ${matchedCount}/${gameEmojis.length} jode mile`;
+      if(matchedCount === gameEmojis.length){
+        gameStatus.textContent = `🎉 Shabash! sirf ${moves} chaalon mein pura khel jeet liya`;
+        const rect = gameGrid.getBoundingClientRect();
+        spawnBurst(rect.left+rect.width/2, rect.top+rect.height/2, 20);
+      }
+    } else {
+      setTimeout(()=>{
+        a.classList.remove('flipped'); b.classList.remove('flipped');
+        flippedCards = []; lockBoard = false;
+        gameStatus.textContent = `${moves} chaalon mein ${matchedCount}/${gameEmojis.length} jode mile`;
+      }, 800);
+    }
+  }
+}
+document.getElementById('gameReset').addEventListener('click', buildGame);
+buildGame();
 
-      <div class="notes-grid">
-        <div class="note-card glass reveal-up" style="--delay:0.05s">
-          <span class="note-mark">&ldquo;</span>
-          <p>You are my favorite notification, my favorite good morning, and my favorite goodnight.</p>
-        </div>
-        <div class="note-card glass reveal-up" style="--delay:0.1s">
-          <span class="note-mark">&ldquo;</span>
-          <p>Home isn't a place for me anymore. It's wherever you are.</p>
-        </div>
-        <div class="note-card glass reveal-up" style="--delay:0.15s">
-          <span class="note-mark">&ldquo;</span>
-          <p>I fall for you a little more, every single day — even on the ordinary ones.</p>
-        </div>
-        <div class="note-card glass reveal-up" style="--delay:0.2s">
-          <span class="note-mark">&ldquo;</span>
-          <p>Thank you for loving me on my hardest days, not just my easiest ones.</p>
-        </div>
-        <div class="note-card glass reveal-up" style="--delay:0.25s">
-          <span class="note-mark">&ldquo;</span>
-          <p>Every love song makes more sense to me now, because I know it's about you.</p>
-        </div>
-        <div class="note-card glass reveal-up" style="--delay:0.3s">
-          <span class="note-mark">&ldquo;</span>
-          <p>If I could relive one moment forever, I'd choose the one where I first held your hand.</p>
-        </div>
-      </div>
-    </section>
+/* ---------------- Scratch card ---------------- */
+const scratchBase = document.getElementById('scratchBase');
+const bCtx = scratchBase.getContext('2d');
+const scratchCanvas = document.getElementById('scratchCanvas');
+const sCtx = scratchCanvas.getContext('2d');
 
-    <!-- ============================================= -->
-    <!-- 8. REASONS I LOVE YOU                           -->
-    <!-- ============================================= -->
-    <section id="reasons" class="section">
-      <div class="section-head reveal-up">
-        <p class="eyebrow">Just a Few</p>
-        <h2 class="section-title">Reasons I Love You</h2>
-        <p class="section-desc">A list that keeps growing, one day at a time.</p>
-      </div>
+function sizeCanvas(cv, ctx2d){
+  const rect = cv.getBoundingClientRect();
+  cv.width = rect.width * devicePixelRatio;
+  cv.height = rect.height * devicePixelRatio;
+  ctx2d.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  return { w: rect.width, h: rect.height };
+}
 
-      <ul class="reasons-list">
-        <li class="reason-item reveal-up" style="--delay:0.03s"><span class="reason-icon">💫</span><span>The way you laugh at your own jokes before you even finish them.</span></li>
-        <li class="reason-item reveal-up" style="--delay:0.06s"><span class="reason-icon">🌙</span><span>How you check in on me even on your most exhausting days.</span></li>
-        <li class="reason-item reveal-up" style="--delay:0.09s"><span class="reason-icon">🌷</span><span>Your kindness toward people who can never repay it.</span></li>
-        <li class="reason-item reveal-up" style="--delay:0.12s"><span class="reason-icon">🎶</span><span>The way you sing off-key and never once care.</span></li>
-        <li class="reason-item reveal-up" style="--delay:0.15s"><span class="reason-icon">🤍</span><span>How safe and calm I feel, just holding your hand.</span></li>
-        <li class="reason-item reveal-up" style="--delay:0.18s"><span class="reason-icon">🔥</span><span>Your quiet strength on the days that ask the most of you.</span></li>
-        <li class="reason-item reveal-up" style="--delay:0.21s"><span class="reason-icon">📖</span><span>How you remember tiny things I mentioned once, weeks ago.</span></li>
-        <li class="reason-item reveal-up" style="--delay:0.24s"><span class="reason-icon">💞</span><span>Simply — because you're you, and that's more than enough.</span></li>
-      </ul>
-    </section>
+function setupScratch(){
+  const { w, h } = sizeCanvas(scratchBase, bCtx);
+  sizeCanvas(scratchCanvas, sCtx);
 
-    <!-- ============================================= -->
-    <!-- 9. SURPRISE BUTTON                              -->
-    <!-- ============================================= -->
-    <section id="surprise" class="section surprise-section">
-      <div class="reveal-up">
-        <p class="eyebrow">One More Thing</p>
-        <h2 class="section-title">I Have a Little Surprise For You</h2>
-        <button class="btn btn-gold" id="surprise-btn">
-          <span>Tap For a Surprise</span>
-          <svg viewBox="0 0 24 24" fill="none" class="btn-heart"><path d="M12 20.5S3 14.9 3 8.9C3 5.6 5.6 3 8.9 3c1.9 0 3.7 1 4.8 2.6C14.8 4 16.6 3 18.5 3c3.3 0 5.9 2.6 5.9 5.9 0 6-9 11.6-9 11.6Z" fill="currentColor"/></svg>
-        </button>
-      </div>
-    </section>
+  // base message layer (stays underneath, permanent)
+  const grad = bCtx.createLinearGradient(0,0,w,h);
+  grad.addColorStop(0,'#3a1a2e'); grad.addColorStop(1,'#241017');
+  bCtx.fillStyle = grad; bCtx.fillRect(0,0,w,h);
+  bCtx.fillStyle = '#f0bd82';
+  bCtx.textAlign = 'center'; bCtx.textBaseline = 'middle';
+  bCtx.font = `600 ${Math.max(18, w*0.045)}px 'Playfair Display', serif`;
+  bCtx.fillText('Tum meri sabse acchi', w/2, h/2 - 18);
+  bCtx.fillText('aadat ho, Chuuze 🤍', w/2, h/2 + 18);
 
-    <div class="surprise-modal" id="surprise-modal" aria-hidden="true">
-      <div class="surprise-modal-hearts" id="surprise-hearts" aria-hidden="true"></div>
-      <div class="surprise-modal-content glass">
-        <button class="surprise-close" id="surprise-close" aria-label="Close">&times;</button>
-        <p class="surprise-eyebrow">a whisper for you</p>
-        <h3>You are, and always will be, my favorite love story.</h3>
-        <p class="surprise-text">Out of every person, every city, every timeline this life could've given me — I'm endlessly grateful it gave me you.</p>
-        <p class="surprise-signature">— forever yours</p>
-      </div>
-    </div>
+  // scratch cover layer (top canvas, gets erased)
+  sCtx.clearRect(0,0,w,h);
+  sCtx.globalCompositeOperation = 'source-over';
+  const foil = sCtx.createLinearGradient(0,0,w,h);
+  foil.addColorStop(0,'#d9a066'); foil.addColorStop(0.5,'#f0bd82'); foil.addColorStop(1,'#7a2d42');
+  sCtx.fillStyle = foil; sCtx.fillRect(0,0,w,h);
+  sCtx.fillStyle = 'rgba(36,16,23,0.85)';
+  sCtx.textAlign = 'center'; sCtx.textBaseline = 'middle';
+  sCtx.font = `italic 500 ${Math.max(14,w*0.032)}px 'Cormorant Garamond', serif`;
+  sCtx.fillText('yahan scratch karo ✨', w/2, h/2);
+}
+setupScratch();
+window.addEventListener('resize', setupScratch);
 
-    <!-- ============================================= -->
-    <!-- 10. FINAL SECTION                               -->
-    <!-- ============================================= -->
-    <footer id="final" class="final-section">
-      <div class="final-glow" aria-hidden="true"></div>
-      <p class="final-quote reveal-up">
-        "Being deeply loved by someone gives you strength,<br class="quote-break" />
-        while loving someone deeply gives you courage."
-      </p>
-      <h2 class="final-title reveal-up">Forever &amp; Always <span class="heart-pulse">❤</span></h2>
-      <p class="final-sign reveal-up">made with love, one memory at a time</p>
-    </footer>
+let scratching = false, scratchDone = false;
+function scratchAt(clientX, clientY){
+  const rect = scratchCanvas.getBoundingClientRect();
+  const x = clientX - rect.left, y = clientY - rect.top;
+  sCtx.globalCompositeOperation = 'destination-out';
+  sCtx.beginPath();
+  sCtx.arc(x, y, 22, 0, Math.PI*2);
+  sCtx.fill();
+}
+function checkScratchProgress(){
+  if(scratchDone) return;
+  const data = sCtx.getImageData(0,0,scratchCanvas.width, scratchCanvas.height).data;
+  let cleared = 0, total = 0;
+  for(let i=3; i<data.length; i+=4*40){ total++; if(data[i] < 20) cleared++; }
+  if(total>0 && cleared/total > 0.5){
+    scratchDone = true;
+    scratchCanvas.style.transition = 'opacity 0.8s ease';
+    scratchCanvas.style.opacity = '0';
+  }
+}
+scratchCanvas.addEventListener('mousedown', e=>{ scratching=true; scratchAt(e.clientX,e.clientY); });
+window.addEventListener('mouseup', ()=>{ if(scratching){ scratching=false; checkScratchProgress(); } });
+scratchCanvas.addEventListener('mousemove', e=>{ if(scratching){ scratchAt(e.clientX,e.clientY); } });
+scratchCanvas.addEventListener('touchstart', e=>{ scratching=true; const t=e.touches[0]; scratchAt(t.clientX,t.clientY); }, {passive:true});
+scratchCanvas.addEventListener('touchmove', e=>{ if(scratching){ e.preventDefault(); const t=e.touches[0]; scratchAt(t.clientX,t.clientY); } }, {passive:false});
+scratchCanvas.addEventListener('touchend', ()=>{ if(scratching){ scratching=false; checkScratchProgress(); } });
 
-  </main>
+/* ---------------- Surprise button ---------------- */
+const surpriseBtn = document.getElementById('surpriseBtn');
+const surpriseOverlay = document.getElementById('surpriseOverlay');
+const surpriseClose = document.getElementById('surpriseClose');
+surpriseBtn.addEventListener('click', ()=>{
+  spawnRainConfetti();
+  swellMusic();
+  setTimeout(()=> surpriseOverlay.classList.add('show'), 500);
+});
+surpriseClose.addEventListener('click', ()=> surpriseOverlay.classList.remove('show'));
+surpriseOverlay.addEventListener('click', (e)=>{ if(e.target===surpriseOverlay) surpriseOverlay.classList.remove('show'); });
+</script>
 
-  <!-- Back to top -->
-  <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-
-  <script src="script.js"></script>
 </body>
-</html>a
+</html>
